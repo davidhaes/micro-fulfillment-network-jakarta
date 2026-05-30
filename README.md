@@ -78,11 +78,7 @@ The project shows that quick-commerce decarbonization in Greater Jakarta is not 
 
 Demand in this project is a latent open-data proxy, not actual platform order volume. Emissions are scenario-based per 100,000 proxy deliveries, not measured company emissions.
 
-## Recommended Visuals
 
-* `outputs/figures/maps/optimized_mfc_network_map.png`
-* `outputs/figures/maps/thirty_minute_service_coverage_map.png`
-* `outputs/figures/maps/underserved_hotspot_lisa_map.png`
-* `outputs/figures/charts/enhanced_extended_mfc_coverage_curve.png`
-* `outputs/figures/charts/enhanced_speed_service_sensitivity_heatmap.png`
-* `outputs/figures/charts/enhanced_admin_action_typology.png`
+![Optimized MFC Network](docs/assets/optimized_mfc_network_map.png)
+![Underserved Hotspots](docs/assets/underserved_hotspot_lisa_map.png)
+![Coverage Curve](docs/assets/enhanced_extended_mfc_coverage_curve.png)

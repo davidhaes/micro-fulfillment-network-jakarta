@@ -3,11 +3,11 @@ message: "If you use this project, please cite it as below."
 title: "Micro-Fulfillment Network Design for Reducing Last-Mile Delivery Emissions in Greater Jakarta Quick Commerce"
 type: software
 authors:
-  - family-names: "David"
+  - family-names: "Simangunsong"
     given-names: "David"
 abstract: "An open-data geospatial optimization framework for quick-commerce micro-fulfillment network design, 30-minute service coverage analysis, and last-mile CO2e scenario modeling in Greater Jakarta."
 version: "0.1.0"
-date-released: "2025-01-01"
+date-released: "2026-05-30"
 license: "MIT"
 keywords:
   - geospatial analytics
