@@ -1,0 +1,74 @@
+{
+  "dataset_name": "Greater Jakarta dissolved AOI",
+  "source": "GADM 4.1",
+  "source_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_IDN_2.json.zip",
+  "license": "GADM license for academic and non-commercial use",
+  "access_date": "2026-05-30",
+  "spatial_resolution": "Administrative boundary level 2 dissolved to metropolitan AOI",
+  "temporal_coverage": "Static administrative boundary",
+  "preprocessing_steps": [
+    "Downloaded GADM Indonesia level 2 GeoJSON zip",
+    "Filtered DKI Jakarta, Bogor, Depok, Tangerang, and Bekasi administrative units",
+    "Excluded Kepulauan Seribu because the study focuses on road-based last-mile logistics",
+    "Dissolved selected units into one functional metropolitan AOI"
+  ],
+  "unit": "Polygon geometry",
+  "citation_apa": "GADM. (2022). Database of Global Administrative Areas, version 4.1.",
+  "citation_bibtex": "@misc{gadm2022, title={Database of Global Administrative Areas, version 4.1}, author={{GADM}}, year={2022}, url={https://gadm.org/}}",
+  "file_size_mb": 0.037,
+  "crs": "EPSG:4326",
+  "included_units": [
+    {
+      "NAME_1": "Banten",
+      "NAME_2": "KotaTangerang"
+    },
+    {
+      "NAME_1": "Banten",
+      "NAME_2": "Tangerang"
+    },
+    {
+      "NAME_1": "Banten",
+      "NAME_2": "TangerangSelatan"
+    },
+    {
+      "NAME_1": "JakartaRaya",
+      "NAME_2": "JakartaBarat"
+    },
+    {
+      "NAME_1": "JakartaRaya",
+      "NAME_2": "JakartaPusat"
+    },
+    {
+      "NAME_1": "JakartaRaya",
+      "NAME_2": "JakartaSelatan"
+    },
+    {
+      "NAME_1": "JakartaRaya",
+      "NAME_2": "JakartaTimur"
+    },
+    {
+      "NAME_1": "JakartaRaya",
+      "NAME_2": "JakartaUtara"
+    },
+    {
+      "NAME_1": "JawaBarat",
+      "NAME_2": "Bekasi"
+    },
+    {
+      "NAME_1": "JawaBarat",
+      "NAME_2": "Bogor"
+    },
+    {
+      "NAME_1": "JawaBarat",
+      "NAME_2": "Depok"
+    },
+    {
+      "NAME_1": "JawaBarat",
+      "NAME_2": "KotaBekasi"
+    },
+    {
+      "NAME_1": "JawaBarat",
+      "NAME_2": "KotaBogor"
+    }
+  ]
+}

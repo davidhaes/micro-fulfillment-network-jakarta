@@ -1,0 +1,67 @@
+# Python & Virtual Environments
+.venv/
+venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Credentials & Secrets
+.env
+credentials.env
+*.pem
+*.key
+*.json.secret
+ee-davidproject-*.json
+*service-account*.json
+*credentials*.json
+*credential*.json
+
+# OS & Editor Files
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.docx
+~$*.docx
+
+# Caches
+.cache/
+gee_cache/
+osmnx_cache/
+
+# Large Data Files (Raw & Processed)
+data/raw/**/*.tif
+data/raw/**/*.tiff
+data/raw/**/*.gpkg
+data/raw/**/*.parquet
+data/raw/**/*.geojson
+data/raw/**/*.csv
+
+data/processed/**/*.tif
+data/processed/**/*.tiff
+data/processed/**/*.gpkg
+data/processed/**/*.parquet
+data/processed/**/*.geojson
+data/processed/**/*.csv
+
+# Large Outputs & Generated Tables
+outputs/figures/maps/*.png
+outputs/figures/maps/*.pdf
+outputs/figures/charts/*.png
+outputs/figures/charts/*.pdf
+outputs/maps_interactive/*.html
+outputs/tables/*.csv
+outputs/geotiffs/*.tif
+
+# LaTeX/Doc Aux
+*.aux
+*.log
+*.out
+*.toc

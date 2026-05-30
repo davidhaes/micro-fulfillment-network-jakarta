@@ -1,0 +1,18 @@
+Metadata-Version: 2.4
+Name: micro-fulfillment-network-jakarta
+Version: 0.1.0
+Summary: Open-data spatial optimization framework for micro-fulfillment network design and last-mile delivery emissions reduction in Greater Jakarta.
+Author-email: David <example@example.com>
+License: MIT
+Keywords: geospatial analytics,urban logistics,micro fulfillment,last mile delivery,transport emissions,Google Earth Engine,OpenStreetMap,facility location
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Scientific/Engineering :: GIS
+Classifier: Topic :: Scientific/Engineering :: Information Analysis
+Classifier: Topic :: Scientific/Engineering :: Atmospheric Science
+Classifier: Operating System :: Microsoft :: Windows :: Windows 11
+Requires-Python: <3.12,>=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: license-file
+
+# Micro Fulfillment Network Jakarta

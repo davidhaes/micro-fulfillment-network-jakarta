@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=68.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "micro-fulfillment-network-jakarta"
+version = "0.1.0"
+description = "Open-data spatial optimization framework for micro-fulfillment network design and last-mile delivery emissions reduction in Greater Jakarta."
+readme = "README.md"
+requires-python = ">=3.11,<3.12"
+license = { text = "MIT" }
+authors = [
+    { name = "David", email = "davidhsmg@gmail.com" }
+]
+keywords = [
+    "geospatial analytics",
+    "urban logistics",
+    "micro fulfillment",
+    "last mile delivery",
+    "transport emissions",
+    "Google Earth Engine",
+    "OpenStreetMap",
+    "facility location"
+]
+classifiers = [
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: GIS",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Topic :: Scientific/Engineering :: Atmospheric Science",
+    "Operating System :: Microsoft :: Windows :: Windows 11"
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-ra"
+
+[tool.setuptools.package-data]
+micro_fulfillment_network_jakarta = ["py.typed"]
