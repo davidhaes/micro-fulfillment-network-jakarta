@@ -34,8 +34,6 @@ Initial release.
 
 \* Added Indonesian executive reports and English methodology.
 
-\* Added LinkedIn publication content.
-
 \* Added one-command pipeline runner.
 
 
