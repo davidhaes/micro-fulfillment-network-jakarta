@@ -19,6 +19,9 @@ credential.env
 credentials.env
 *credential*.env
 *credentials*.env
+.env.*
+!.env.example
+
 *.pem
 *.key
 *.json.secret
