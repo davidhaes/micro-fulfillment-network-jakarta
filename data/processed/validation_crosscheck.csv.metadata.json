@@ -1,0 +1,21 @@
+{
+  "dataset_name": "Demand proxy validation cross-check",
+  "source": "Derived from demand clusters and GADM administrative units",
+  "source_url": "Local pipeline output",
+  "license": "Derived open data",
+  "access_date": "2026-05-30",
+  "spatial_resolution": "Administrative unit level 2 summary",
+  "temporal_coverage": "Composite validation using project demand proxy",
+  "preprocessing_steps": [
+    "Converted demand grid to centroids",
+    "Spatially joined grid centroids to GADM level 2 administrative units",
+    "Aggregated population proxy, demand index, proxy deliveries, and hotspot counts",
+    "Computed Pearson correlation between population proxy and demand metrics"
+  ],
+  "unit": "Correlation statistic and administrative summary",
+  "citation_apa": "Validation cross-check derived from open geospatial data.",
+  "citation_bibtex": "@misc{validationCrosscheck2025, title={Administrative validation cross-check for Greater Jakarta quick-commerce demand proxy}, author={Project pipeline}, year={2025}}",
+  "file_size_mb": 0.0,
+  "crs": "Not applicable",
+  "interpretation_limit": "This is a sanity check against population structure, not validation against proprietary q-commerce orders."
+}

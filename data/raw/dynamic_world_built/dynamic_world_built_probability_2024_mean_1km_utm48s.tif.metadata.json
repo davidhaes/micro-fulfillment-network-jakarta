@@ -1,0 +1,25 @@
+{
+  "dataset_name": "Dynamic World built probability annual mean",
+  "source": "Google Dynamic World V1 via Google Earth Engine",
+  "source_url": "https://developers.google.com/earth-engine/datasets/catalog/GOOGLE_DYNAMICWORLD_V1",
+  "license": "CC-BY 4.0",
+  "access_date": "2026-05-30",
+  "spatial_resolution": "1000 m analysis grid aggregated from 10 m source",
+  "temporal_coverage": "2024-01-01 to 2024-12-31",
+  "preprocessing_steps": [
+    "Filtered Dynamic World V1 image collection to target year",
+    "Selected built probability band",
+    "Computed annual mean composite",
+    "Aggregated built probability to 1 km using mean reducer",
+    "Clipped raster to Greater Jakarta AOI",
+    "Reprojected raster to EPSG:32748"
+  ],
+  "unit": "probability from 0 to 1",
+  "citation_apa": "Brown, C. F., et al. (2022). Dynamic World, near real-time global 10 m land use land cover mapping. Scientific Data.",
+  "citation_bibtex": "@article{brown2022dynamic, title={Dynamic World, near real-time global 10 m land use land cover mapping}, author={Brown, Christopher F. and others}, journal={Scientific Data}, year={2022}}",
+  "file_size_mb": 0.064,
+  "crs": "EPSG:32748",
+  "gee_collection": "GOOGLE/DYNAMICWORLD/V1",
+  "target_year": 2024,
+  "interpretation_limit": "Built probability is used as an urban intensity proxy after annual averaging and 1 km aggregation."
+}

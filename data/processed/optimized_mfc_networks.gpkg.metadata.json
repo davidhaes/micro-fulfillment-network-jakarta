@@ -1,0 +1,28 @@
+{
+  "dataset_name": "Optimized MFC network scenarios",
+  "source": "Derived p-median optimization output",
+  "source_url": "Local pipeline output",
+  "license": "Derived open data",
+  "access_date": "2026-05-30",
+  "spatial_resolution": "Point facilities selected from candidate set",
+  "temporal_coverage": "Scenario-based facility location analysis",
+  "preprocessing_steps": [
+    "Selected demand-weighted p-median locations using vectorized greedy deterministic heuristic",
+    "Applied corrected Euclidean distance with detour factor 1.35",
+    "Evaluated MFC count scenarios from project configuration",
+    "Computed 30-minute coverage using default speed assumption",
+    "Normalized selected demand subset to 100,000 proxy deliveries for comparable scenario accounting"
+  ],
+  "unit": "Selected facility point by scenario",
+  "citation_apa": "Hakimi, S. L. (1964). Optimum locations of switching centers and the absolute centers and medians of a graph. Operations Research.",
+  "citation_bibtex": "@article{hakimi1964, title={Optimum locations of switching centers and the absolute centers and medians of a graph}, author={Hakimi, S. L.}, journal={Operations Research}, year={1964}}",
+  "file_size_mb": 0.121,
+  "crs": "EPSG:32748",
+  "detour_factor": 1.35,
+  "baseline_hub": {
+    "longitude": 106.8272,
+    "latitude": -6.1754
+  },
+  "max_demand_points": 2500,
+  "max_candidates": 350
+}

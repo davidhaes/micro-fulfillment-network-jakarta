@@ -1,26 +1,38 @@
 # Data Dictionary
 
-* cell_id: ID unik grid cell 1 km.
-* population_count: jumlah penduduk WorldPop hasil agregasi ke grid.
-* nighttime_lights: annual mean VIIRS avg_rad.
-* built_probability: annual mean Dynamic World built probability.
-* road_length_m_intersecting: total panjang jalan OSM yang berinterseksi dengan cell.
-* commercial_poi_count: jumlah POI komersial OSM dalam cell.
-* population_score: skor populasi 0 sampai 1 setelah log1p dan scaling.
-* nighttime_lights_score: skor VIIRS 0 sampai 1 setelah log1p dan scaling.
-* built_score: skor built-up 0 sampai 1.
-* road_accessibility_score: skor akses jalan 0 sampai 1.
-* poi_density_score: skor POI 0 sampai 1.
-* demand_index: latent quick-commerce demand proxy 0 sampai 1.
-* proxy_deliveries_per_100k: bobot demand yang dinormalisasi ke 100.000 unit proxy.
-* mfc_count: jumlah micro-fulfillment center dalam skenario.
-* coverage_share: share proxy demand yang tercakup dalam SLA 30 menit.
-* demand_weighted_distance_km: jarak demand-weighted per 100.000 proxy deliveries.
-* distance_reduction_percent: penurunan jarak dibanding baseline centralized fulfillment.
-* scenario_emissions_kgco2e: emisi skenario dalam kg CO2e per 100.000 proxy deliveries.
-* emission_reduction_percent: penurunan emisi dibanding centralized ICE baseline.
-* underserved_score: demand index dikalikan status tidak tercakup pada skenario referensi.
-* local_moran_i: statistik Local Moran's I.
-* local_moran_p: p-value Local Moran's I berbasis permutations.
-* lisa_cluster: label cluster LISA.
-* cluster_label: label segmentasi operasional KMeans.
+## Demand Grid
+
+* `cell_id`: unique 1 km grid cell identifier.
+* `population_count`: WorldPop population count aggregated to the analysis grid.
+* `nighttime_lights`: VIIRS annual mean nighttime radiance.
+* `built_probability`: Dynamic World annual mean built-up probability.
+* `road_length_m_intersecting`: clipped OSM road length inside the grid cell.
+* `commercial_poi_count`: count of commercial OSM POIs inside the grid cell.
+* `demand_index`: latent quick-commerce demand suitability index from 0 to 1.
+* `proxy_deliveries_per_100k`: normalized proxy demand weight per 100,000 units.
+
+## Optimization Outputs
+
+* `mfc_count`: number of selected micro-fulfillment centers in the scenario.
+* `coverage_share`: share of proxy demand covered within the modeled service threshold.
+* `demand_weighted_distance_km`: demand-weighted route-distance proxy per 100,000 proxy deliveries.
+* `distance_reduction_percent`: distance reduction relative to the centralized baseline.
+
+## Emissions
+
+* `ev_adoption_percent`: electric motorcycle adoption rate in the scenario.
+* `scenario_emissions_kgco2e`: scenario emissions in kg CO2e per 100,000 proxy deliveries.
+* `emission_reduction_percent`: emissions reduction relative to the centralized ICE baseline.
+
+## Spatial Statistics
+
+* `moran_i`: Global Moran’s I spatial autocorrelation statistic.
+* `local_moran_i`: Local Moran’s I statistic.
+* `lisa_cluster`: LISA cluster class.
+* `underserved_score`: demand index multiplied by uncovered status under the reference scenario.
+
+## Action Typology
+
+* `action_typology`: recommended operational strategy for an administrative unit.
+* `action_priority`: priority level.
+* `action_rationale`: explanation for the recommended action.

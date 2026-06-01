@@ -1,0 +1,21 @@
+{
+  "dataset_name": "Candidate micro-fulfillment center locations",
+  "source": "Derived from demand grid and OpenStreetMap commercial POIs",
+  "source_url": "Local pipeline output",
+  "license": "Derived open data",
+  "access_date": "2026-05-30",
+  "spatial_resolution": "1000 m demand grid with candidate points",
+  "temporal_coverage": "Composite proxy using latest available open datasets",
+  "preprocessing_steps": [
+    "Selected high-demand grid cells above 70th percentile",
+    "Filtered cells with built probability at least 0.05",
+    "Selected commercial OSM POIs inside high-demand cells",
+    "Fell back to high-demand cell centroids if POI candidates were unavailable",
+    "Limited candidates to top 350 for computational stability"
+  ],
+  "unit": "Candidate point",
+  "citation_apa": "Derived candidate MFC locations from open geospatial data.",
+  "citation_bibtex": "@misc{mfcCandidates2025, title={Candidate micro-fulfillment center locations for Greater Jakarta}, author={Project pipeline}, year={2025}}",
+  "file_size_mb": 0.168,
+  "crs": "EPSG:32748"
+}

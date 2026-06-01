@@ -1,4 +1,3 @@
-# Python & Virtual Environments
 .venv/
 venv/
 env/
@@ -10,10 +9,16 @@ __pycache__/
 .mypy_cache/
 .ruff_cache/
 .ipynb_checkpoints/
+*.egg-info/
+src/*.egg-info/
+src/**/*.egg-info/
 
-# Credentials & Secrets
+# Credentials and secrets
 .env
+credential.env
 credentials.env
+*credential*.env
+*credentials*.env
 *.pem
 *.key
 *.json.secret
@@ -22,7 +27,7 @@ ee-davidproject-*.json
 *credentials*.json
 *credential*.json
 
-# OS & Editor Files
+# OS and editor files
 .DS_Store
 Thumbs.db
 desktop.ini
@@ -36,7 +41,7 @@ desktop.ini
 gee_cache/
 osmnx_cache/
 
-# Large Data Files (Raw & Processed)
+# Large raw data files
 data/raw/**/*.tif
 data/raw/**/*.tiff
 data/raw/**/*.gpkg
@@ -44,6 +49,7 @@ data/raw/**/*.parquet
 data/raw/**/*.geojson
 data/raw/**/*.csv
 
+# Large processed data files
 data/processed/**/*.tif
 data/processed/**/*.tiff
 data/processed/**/*.gpkg
@@ -51,16 +57,39 @@ data/processed/**/*.parquet
 data/processed/**/*.geojson
 data/processed/**/*.csv
 
-# Large Outputs & Generated Tables
+# Keep lightweight data documentation
+!data/raw/MANIFEST.md
+!data/processed/PROCESSING_LOG.md
+!data/external/references/**
+!data/**/*.metadata.json
+
+# Large generated outputs
 outputs/figures/maps/*.png
 outputs/figures/maps/*.pdf
 outputs/figures/charts/*.png
 outputs/figures/charts/*.pdf
 outputs/maps_interactive/*.html
 outputs/tables/*.csv
+outputs/tables/*.json
 outputs/geotiffs/*.tif
+outputs/geotiffs/*.tiff
+outputs/run_log.md
 
-# LaTeX/Doc Aux
+# Keep final reports if intentionally committed
+!outputs/reports/**
+!outputs/reports/*.md
+
+# Keep selected portfolio assets for README display
+!docs/assets/
+!docs/assets/*.png
+
+# Ignore old platform-specific communication outputs
+content/linkedin_post.md
+content/linkedin_article.md
+content/linkedin_upload_guide.md
+outputs/linkedin/
+
+# LaTeX and document auxiliary files
 *.aux
 *.log
 *.out

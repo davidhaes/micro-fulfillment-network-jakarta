@@ -1,66 +1,50 @@
 # Conclusions
 
-## Answer to Research Questions
+## Answers to the Research Questions
 
-1. Jumlah minimum MFC yang mencapai target 90 persen coverage adalah 30 jika skenario tersebut mencapai 90 persen. Coverage skenario referensi adalah 76.3%. Jika nilai ini di bawah 90 persen, maka seluruh skenario yang diuji belum memenuhi target dan 30 adalah konfigurasi coverage terbaik pada rentang p yang diuji.
+1. No tested scenario from 5 to 60 MFCs reaches 90% coverage within the modeled 30-minute threshold at 20 km/h. The 30-MFC scenario covers 76.3% of proxy demand, and the 60-MFC scenario only increases coverage to 76.8%. This indicates a structural coverage ceiling.
 
-2. Area underserved prioritas terbesar berada pada unit administratif dengan mean underserved score tertinggi. Lima unit teratas adalah:
-* Tangerang: mean underserved score 0.4012, high-high underserved cells 675.
-* Bekasi: mean underserved score 0.3497, high-high underserved cells 522.
-* Bogor: mean underserved score 0.2757, high-high underserved cells 737.
-* TangerangSelatan: mean underserved score 0.1299, high-high underserved cells 25.
-* Depok: mean underserved score 0.0145, high-high underserved cells 3.
+2. The largest underserved bottlenecks are located in Tangerang, Bekasi, and Bogor regencies. Tangerang has a mean underserved score of 0.401, Bekasi 0.350, and Bogor 0.276.
 
-3. Skenario terbaik yang diuji menurunkan demand-weighted distance sebesar 77.0% dibanding centralized baseline. Baseline distance adalah 3,190,161.7 km per 100.000 proxy deliveries, sedangkan skenario terbaik adalah 734,869.6 km.
+3. The optimized 30-MFC network reduces demand-weighted last-mile distance by 77.0% compared with the centralized baseline. Baseline distance is 3,190,161.7 km per 100,000 proxy deliveries, while the 30-MFC scenario reduces it to 734,869.6 km.
 
-4. Pengurangan CO2e tertinggi adalah 92.7% pada 30 MFC dan 100 persen EV adoption. Pada skenario referensi dengan 50 persen EV adoption, pengurangan CO2e adalah 84.8%.
+4. The 30-MFC network plus 50% electric motorcycle adoption reduces scenario CO2e by 84.8% per 100,000 proxy deliveries. With 100% EV adoption, the reduction increases to 92.7%.
 
-5. Demand index menunjukkan Moran's I sebesar 0.944 dengan p-value 0.001. Underserved score menunjukkan Moran's I sebesar 0.870 dengan p-value 0.001. Nilai ini menunjukkan apakah hotspot demand dan underserved area membentuk pola spasial yang signifikan, bukan hanya titik ekstrem individual.
+5. Demand and underserved gaps are strongly spatially clustered. Demand index Moran’s I is 0.944, and underserved score Moran’s I is 0.870, both significant at p = 0.001.
 
-## Top 5 Findings
+## Top Findings
 
-* Optimasi lokasi MFC menghasilkan penurunan jarak maksimum sebesar 77.0% pada rentang skenario yang diuji. Implikasinya, desain jaringan lebih menentukan efisiensi spasial daripada hanya mempercepat rider pada jaringan yang sama.
-
-* Skenario referensi 30 MFC memberi coverage 76.3% dalam SLA 30 menit. Jika nilai ini belum mencapai 90 persen, maka operator perlu menaikkan jumlah MFC di atas rentang yang diuji atau menambah strategi hybrid seperti pop-up fulfillment dan rider staging.
-
-* Kombinasi spatial optimization dan EV adoption menghasilkan pengurangan emisi tertinggi sebesar 92.7%. Ini menunjukkan decarbonization tidak cukup hanya mengganti kendaraan, karena jarak fulfillment tetap menentukan beban energi.
-
-* Sebanyak 70 persen demand proxy terkonsentrasi pada sekitar 48.3% area grid. Status H2: tidak terdukung. Jika area share rendah, strategi MFC perlu fokus pada cluster, bukan penyebaran merata.
-
-* Spatial autocorrelation underserved score menunjukkan Moran's I 0.870. Jika signifikan, rekomendasi lokasi harus berbasis cluster contiguous, bukan daftar cell ranking individual.
+* Micro-fulfillment significantly reduces last-mile distance, but it does not automatically solve 30-minute metropolitan-wide coverage.
+* Increasing MFC count from 30 to 60 yields almost no coverage gain, raising coverage only from 76.3% to 76.8%.
+* The largest gains occur between 5 and 15 MFCs, after which coverage improvement shows strong diminishing returns.
+* A 60-minute service tier at 25 km/h reaches 98.2% coverage, showing that tiered service design is more effective than uniform 30-minute coverage.
+* Fringe regencies are the structural bottleneck. Dense urban cores are relatively serviceable, while Tangerang, Bekasi, and Bogor require different operational strategies.
+* EV adoption is most effective after fulfillment distance is reduced. Network design and fleet electrification should be implemented together.
 
 ## Hypothesis Evaluation
 
-* H1, distributed MFC network reduces distance by at least 20 percent: terdukung. Nilai terbaik yang diuji adalah 77.0%.
-
-* H2, at least 70 percent of demand proxy is concentrated within less than 40 percent of grid area: tidak terdukung. Area share untuk 70 persen demand proxy adalah 48.3%.
-
-* H3, optimized MFC plus 50 percent EV adoption reduces CO2e by at least 30 percent: terdukung. Nilai skenario referensi EV 50 persen adalah 84.8%.
+* H1 is strongly supported. Distributed MFCs reduce demand-weighted distance by more than 20%, with a 77.0% reduction in the 30-MFC scenario.
+* H2 is not supported. Seventy percent of proxy demand requires 48.3% of the grid area, not less than 40%. Demand is more spatially distributed than expected.
+* H3 is strongly supported. The 30-MFC network plus 50% EV adoption reduces scenario CO2e by 84.8%, exceeding the 30% benchmark.
 
 ## Spatial Pattern Summary
 
-Demand proxy tidak menyebar merata. Cell bernilai tinggi muncul pada kombinasi populasi tinggi, nighttime lights kuat, built-up intensity, akses jalan, dan POI komersial. Underserved hotspots paling penting adalah area demand tinggi yang masih berada di luar cakupan 30 menit dalam skenario referensi.
+Demand is not randomly distributed. It is strongly clustered across the metropolitan region. The same is true for underserved demand. Core urban areas such as Jakarta, Kota Tangerang, Depok, Kota Bekasi, and Kota Bogor show high demand but relatively low underserved scores. In contrast, Tangerang, Bekasi, and Bogor regencies contain large underserved clusters.
 
 ## Temporal Pattern Summary
 
-Konteks temporal nighttime lights 2020 sampai 2024 menunjukkan Sen's slope VIIRS sebesar 0.531 avg_rad per tahun dengan Kendall p-value 0.817. Angka ini harus dibaca sebagai perubahan aktivitas malam metropolitan, bukan pertumbuhan order q-commerce aktual.
+VIIRS nighttime lights show a positive Sen’s slope of 0.531 avg_rad per year from 2020 to 2024, but the Kendall p-value is 0.817. This trend should not be interpreted as statistically significant growth. VIIRS is used as an economic activity proxy, not as evidence of actual quick-commerce order growth.
 
-## Surprises and Counter-Intuitive Findings
+## Counter-Intuitive Findings
 
-* Area dengan populasi tinggi tidak selalu menjadi kandidat MFC tertinggi jika POI komersial dan akses jalan rendah. Ini menjelaskan mengapa demand proxy berbeda dari peta kepadatan penduduk murni.
-
-* EV adoption memberi dampak kuat, tetapi skenario EV tanpa pengurangan jarak tetap membawa penalti grid electricity. Karena itu network design dan electrification harus dipaketkan.
-
-* Jika coverage tidak mencapai 90 persen pada p=30, masalah utamanya bukan hanya jumlah fasilitas, tetapi bentuk metropolitan, detour factor, dan konsentrasi demand di koridor yang tidak selalu mudah dijangkau.
+* High-demand areas are not always the areas with the largest service gaps.
+* Adding more MFCs beyond 30 does not materially improve 30-minute coverage.
+* A uniform 30-minute promise is less realistic than a segmented service-tier strategy.
+* The urban core is not the main bottleneck. Fringe regencies drive the remaining coverage gap.
 
 ## Limitations
 
-* Demand quick commerce aktual tidak tersedia sebagai open data. Semua hasil demand adalah latent proxy.
-
-* Corrected Euclidean distance dengan detour factor 1.35 digunakan sebagai approximation. Travel time aktual memerlukan time-dependent routing dan data congestion proprietary.
-
-* Emission factors bersifat scenario assumption berbasis literature-style accounting. Hasil bukan inventaris emisi perusahaan aktual.
-
-* OSM POI completeness dapat bervariasi antar wilayah. Area dengan kontribusi OSM rendah bisa underrepresented dalam POI density score.
-
-* Analisis belum memasukkan biaya sewa, kapasitas gudang, inventory duplication, rider shift schedule, dan time-window order batching.
+* Demand is an open-data proxy, not actual order volume.
+* Distance is corrected Euclidean distance, not time-dependent routing.
+* CO2e estimates are scenario-based per 100,000 proxy deliveries.
+* The model does not include facility rent, capacity constraints, inventory duplication, live traffic, rider scheduling, or actual order density.

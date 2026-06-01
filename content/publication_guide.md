@@ -2,7 +2,7 @@
 
 ## Repository Positioning
 
-Use the repository as a reproducible geospatial optimization portfolio project. Emphasize methodology, reproducibility, and decision value.
+Use this repository as a reproducible geospatial optimization portfolio project. Emphasize methodology, reproducibility, and decision value.
 
 ## Recommended Portfolio Assets
 
@@ -12,8 +12,9 @@ Use the repository as a reproducible geospatial optimization portfolio project. 
 * Underserved hotspot map.
 * Emission scenario chart.
 * Enhanced MFC sensitivity chart.
+* Speed and service-tier sensitivity heatmap.
 
-## Recommended Short Project Description
+## Short Project Description
 
 Open-data geospatial optimization framework for quick-commerce micro-fulfillment network design, 30-minute service coverage, underserved hotspot detection, and last-mile CO2e scenario modeling in Greater Jakarta.
 

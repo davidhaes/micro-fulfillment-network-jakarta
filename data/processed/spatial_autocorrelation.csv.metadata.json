@@ -1,0 +1,19 @@
+{
+  "dataset_name": "Global Moran's I spatial autocorrelation diagnostics",
+  "source": "Derived from service coverage grid",
+  "source_url": "Local pipeline output",
+  "license": "Derived open data",
+  "access_date": "2026-05-30",
+  "spatial_resolution": "1000 m grid",
+  "temporal_coverage": "Scenario-based spatial statistics",
+  "preprocessing_steps": [
+    "Loaded demand index and underserved score",
+    "Built KNN spatial weights with k=8",
+    "Computed Global Moran's I with 999 permutations"
+  ],
+  "unit": "Moran's I statistic, z-score, and p-value",
+  "citation_apa": "Moran, P. A. P. (1950). Notes on continuous stochastic phenomena. Biometrika.",
+  "citation_bibtex": "@article{moran1950, title={Notes on continuous stochastic phenomena}, author={Moran, P. A. P.}, journal={Biometrika}, year={1950}}",
+  "file_size_mb": 0.0,
+  "crs": "Not applicable"
+}

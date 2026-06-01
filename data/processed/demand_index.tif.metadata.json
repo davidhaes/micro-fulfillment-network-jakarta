@@ -1,0 +1,18 @@
+{
+  "dataset_name": "Latent quick-commerce demand index raster",
+  "source": "Derived from processed demand grid",
+  "source_url": "Local pipeline output",
+  "license": "Derived open data, see raw metadata for individual licenses",
+  "access_date": "2026-05-30",
+  "spatial_resolution": "1000 m",
+  "temporal_coverage": "Composite proxy using latest available open datasets",
+  "preprocessing_steps": [
+    "Rasterized demand index from processed demand grid",
+    "Aligned output to WorldPop reference grid"
+  ],
+  "unit": "Demand index from 0 to 1",
+  "citation_apa": "Derived open-data demand proxy based on WorldPop, VIIRS, Dynamic World, and OpenStreetMap.",
+  "citation_bibtex": "@misc{derivedDemandRaster2025, title={Latent quick-commerce demand index raster for Greater Jakarta}, author={Project pipeline}, year={2025}}",
+  "file_size_mb": 0.033,
+  "crs": "EPSG:32748"
+}

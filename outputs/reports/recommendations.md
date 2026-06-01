@@ -1,50 +1,50 @@
 # Recommendations
 
-1. Prioritaskan MFC pada cluster demand tinggi yang belum tercakup 30 menit
-   * Insight pemicu: skenario referensi 30 MFC mencakup 76.3% proxy demand.
-   * Aksi konkret: lakukan site search dalam underserved High-High LISA clusters, bukan hanya pada ranking demand individual.
-   * Aktor relevan: quick-commerce operator, real estate expansion team, city logistics planner.
-   * Indikator keberhasilan: coverage proxy demand naik ke minimal 90 persen dan p90 nearest-MFC distance turun.
-   * Prioritas: tinggi, karena langsung menurunkan jarak tempuh dan meningkatkan service level.
+## 1. Adopt tiered service levels instead of a uniform 30-minute promise
 
-2. Paketkan network optimization dengan EV adoption bertahap
-   * Insight pemicu: skenario terbaik menurunkan CO2e sebesar 92.7%.
-   * Aksi konkret: mulai EV deployment pada MFC dengan demand tinggi dan radius pendek agar utilization tinggi.
-   * Aktor relevan: fleet manager, ESG team, energy partner, charging infrastructure provider.
-   * Indikator keberhasilan: kg CO2e per 100.000 proxy deliveries turun dan EV utilization per shift stabil.
-   * Prioritas: tinggi, karena EV paling efektif ketika jarak fulfillment sudah dipangkas.
+* Trigger insight: 60 MFCs only reach 76.8% coverage within 30 minutes, while a 60-minute service tier at 25 km/h reaches 98.2% coverage.
+* Action: use 30 minutes for dense urban cores, 45 minutes for inner suburbs, and 60 minutes for fringe regencies.
+* Relevant actors: operations, product, customer promise, logistics planning.
+* Success indicators: on-time rate per tier, cancellation rate, delivery cost, and CO2e per delivery.
 
-3. Gunakan Tangerang sebagai pilot underserved intervention
-   * Insight pemicu: Tangerang memiliki mean underserved score tertinggi sebesar 0.4012.
-   * Aksi konkret: uji MFC tambahan, rider staging point, atau dark-store partnership di unit administratif ini.
-   * Aktor relevan: operator q-commerce, pemerintah kota atau kabupaten, pemilik retail anchor.
-   * Indikator keberhasilan: penurunan underserved score lokal dan peningkatan share demand tercakup 30 menit.
-   * Prioritas: tinggi, karena pilot harus dimulai dari gap spasial terbesar.
+## 2. Prioritize selective MFC expansion in fringe regencies
 
-4. Jangan menyamakan peta populasi dengan peta demand quick commerce
-   * Insight pemicu: demand index memasukkan VIIRS, built-up, road access, dan POI density selain populasi.
-   * Aksi konkret: gunakan multi-proxy scoring untuk expansion planning dan hindari keputusan berbasis populasi tunggal.
-   * Aktor relevan: strategy analyst, data science team, commercial expansion team.
-   * Indikator keberhasilan: kandidat lokasi memiliki demand index tinggi dan road accessibility score tinggi.
-   * Prioritas: menengah, karena meningkatkan kualitas site screening sebelum due diligence properti.
+* Trigger insight: Tangerang and Bekasi regencies show high underserved scores and large proxy demand.
+* Action: add MFCs only in LISA High-High underserved clusters, not through uniform facility expansion.
+* Relevant actors: expansion team, logistics network planning, real estate team.
+* Success indicators: reduced underserved score and improved 45-minute and 60-minute coverage.
 
-5. Buat policy sandbox untuk low-emission urban logistics zones
-   * Insight pemicu: emission reduction paling besar muncul dari kombinasi lokasi MFC dan fleet electrification.
-   * Aksi konkret: pemerintah dapat menetapkan zona pilot untuk loading, charging, dan micro-fulfillment di area high-demand.
-   * Aktor relevan: Dinas Perhubungan, Dinas Lingkungan Hidup, BPTJ, operator platform.
-   * Indikator keberhasilan: penurunan jarak rata-rata last-mile, peningkatan EV share, dan pengurangan CO2e per delivery proxy.
-   * Prioritas: menengah, karena memerlukan koordinasi lintas instansi.
+## 3. Use rider staging and partner pickup nodes in Tangerang, Bekasi, and Bogor
 
-6. Terapkan sensitivity review sebelum investasi real estate
-   * Insight pemicu: hasil bergantung pada bobot demand proxy, detour factor, dan speed assumption.
-   * Aksi konkret: jalankan ulang pipeline dengan grid 1500 m, speed 15 km/h, dan bobot demand alternatif sebelum finalisasi lokasi.
-   * Aktor relevan: investment committee, operations research team, finance team.
-   * Indikator keberhasilan: kandidat lokasi tetap muncul pada beberapa skenario sensitivitas.
-   * Prioritas: tinggi untuk keputusan capex, karena mengurangi risiko salah lokasi.
+* Trigger insight: fringe regencies contain large spatially clustered underserved areas.
+* Action: deploy rider staging points, partner pickup nodes, or temporary fulfillment points before committing to full MFC capex.
+* Relevant actors: operations, retail partnership, city logistics planning.
+* Success indicators: reduced p90 nearest-MFC distance and improved delivery reliability.
 
-7. Integrasikan data proprietary setelah framework open-data tervalidasi
-   * Insight pemicu: project ini membangun reproducible baseline tanpa order aktual.
-   * Aksi konkret: tambahkan anonymized order density, rider GPS aggregates, cancellation rate, dan delivery time actuals ke pipeline internal.
-   * Aktor relevan: operator q-commerce, data privacy officer, analytics team.
-   * Indikator keberhasilan: korelasi demand proxy dengan order aktual meningkat dan rekomendasi MFC lebih presisi.
-   * Prioritas: menengah, karena membutuhkan governance data internal.
+## 4. Densify and electrify dense urban cores
+
+* Trigger insight: many core urban areas show high demand but low underserved scores.
+* Action: deploy electric motorcycles, improve charging access, optimize inventory allocation, and increase rider productivity.
+* Relevant actors: fleet management, ESG, operations.
+* Success indicators: EV utilization, CO2e per 100,000 proxy deliveries, rider productivity, and on-time rate.
+
+## 5. Avoid using MFC count as the only expansion metric
+
+* Trigger insight: increasing MFC count from 30 to 60 raises 30-minute coverage by only 0.45 percentage points.
+* Action: evaluate marginal coverage gain per additional MFC before approving new facility investment.
+* Relevant actors: finance, operations strategy, network planning.
+* Success indicators: marginal coverage gain, cost per additional covered demand, and facility utilization.
+
+## 6. Use LISA hotspots as the intervention geography
+
+* Trigger insight: underserved score has Moran’s I of 0.870 with p = 0.001.
+* Action: prioritize spatially contiguous High-High clusters instead of isolated high-ranking cells.
+* Relevant actors: geospatial analytics, expansion planning, public sector logistics.
+* Success indicators: reduction in High-High underserved cells.
+
+## 7. Calibrate the proxy with internal data if available
+
+* Trigger insight: demand is currently modeled as an open-data proxy.
+* Action: integrate anonymized order density, actual delivery time, cancellation rates, and rider GPS aggregates.
+* Relevant actors: data science, privacy, operations analytics.
+* Success indicators: higher correlation between proxy demand and observed order density.

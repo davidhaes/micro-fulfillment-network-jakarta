@@ -1,0 +1,24 @@
+{
+  "dataset_name": "OpenStreetMap drive road network",
+  "source": "OpenStreetMap via OSMnx",
+  "source_url": "https://www.openstreetmap.org/",
+  "license": "Open Database License, ODbL",
+  "access_date": "2026-05-30",
+  "spatial_resolution": "Vector road segments from OpenStreetMap clipped to Greater Jakarta AOI",
+  "temporal_coverage": "Latest OpenStreetMap snapshot at access date",
+  "preprocessing_steps": [
+    "Queried OSM drive road graph inside Greater Jakarta AOI",
+    "Simplified graph topology using OSMnx",
+    "Converted graph edges to GeoDataFrame",
+    "Selected stable road attributes",
+    "Reprojected road edges to EPSG:32748",
+    "Saved to GeoPackage"
+  ],
+  "unit": "Road segment geometry with length in meters",
+  "citation_apa": "OpenStreetMap contributors. (2025). OpenStreetMap geographic database.",
+  "citation_bibtex": "@misc{osm2025, title={OpenStreetMap geographic database}, author={{OpenStreetMap contributors}}, year={2025}, url={https://www.openstreetmap.org/}}",
+  "file_size_mb": 339.242,
+  "crs": "EPSG:32748",
+  "download_tool": "OSMnx",
+  "network_type": "drive"
+}

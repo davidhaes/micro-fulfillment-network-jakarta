@@ -1,0 +1,21 @@
+{
+  "dataset_name": "Operational demand clusters for quick-commerce micro-fulfillment planning",
+  "source": "Derived from demand index, service coverage, and LISA outputs",
+  "source_url": "Local pipeline output",
+  "license": "Derived open data",
+  "access_date": "2026-05-30",
+  "spatial_resolution": "1000 m grid",
+  "temporal_coverage": "Scenario-based clustering analysis",
+  "preprocessing_steps": [
+    "Loaded LISA-enhanced demand and underserved grid",
+    "Selected normalized demand, built-up, accessibility, POI, and underserved features",
+    "Standardized features using scikit-learn StandardScaler",
+    "Applied KMeans with four clusters and fixed random seed",
+    "Assigned operational labels based on demand, underserved, and accessibility rankings"
+  ],
+  "unit": "Cluster ID and operational cluster label",
+  "citation_apa": "MacQueen, J. (1967). Some methods for classification and analysis of multivariate observations.",
+  "citation_bibtex": "@inproceedings{macqueen1967, title={Some methods for classification and analysis of multivariate observations}, author={MacQueen, J.}, year={1967}}",
+  "file_size_mb": 3.684,
+  "crs": "EPSG:32748"
+}

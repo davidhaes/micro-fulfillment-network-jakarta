@@ -1,0 +1,24 @@
+{
+  "dataset_name": "WorldPop population count aggregated to 1 km",
+  "source": "WorldPop via Google Earth Engine",
+  "source_url": "https://developers.google.com/earth-engine/datasets/catalog/WorldPop_GP_100m_pop",
+  "license": "WorldPop open data license",
+  "access_date": "2026-05-30",
+  "spatial_resolution": "1000 m analysis grid aggregated from approximately 100 m source",
+  "temporal_coverage": "2020",
+  "preprocessing_steps": [
+    "Filtered WorldPop collection to Indonesia",
+    "Selected latest available year in the Earth Engine collection",
+    "Aggregated population count to 1 km using sum reducer",
+    "Clipped raster to Greater Jakarta AOI",
+    "Reprojected raster to EPSG:32748"
+  ],
+  "unit": "persons per analysis cell",
+  "citation_apa": "WorldPop. (2020). Global high resolution population denominators project. University of Southampton.",
+  "citation_bibtex": "@misc{worldpop2020, title={Global high resolution population denominators project}, author={{WorldPop}}, year={2020}, url={https://www.worldpop.org/}}",
+  "file_size_mb": 0.033,
+  "crs": "EPSG:32748",
+  "gee_collection": "WorldPop/GP/100m/pop",
+  "latest_available_year_used": 2020,
+  "storage_cap_strategy": "Aggregated to 1 km to keep data folder below 10 GB and match facility location analysis scale."
+}

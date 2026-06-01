@@ -1,0 +1,50 @@
+{
+  "dataset_name": "OpenStreetMap commercial and logistics-relevant POIs",
+  "source": "OpenStreetMap via OSMnx",
+  "source_url": "https://www.openstreetmap.org/",
+  "license": "Open Database License, ODbL",
+  "access_date": "2026-05-30",
+  "spatial_resolution": "Vector POI geometries from OpenStreetMap clipped to Greater Jakarta AOI",
+  "temporal_coverage": "Latest OpenStreetMap snapshot at access date",
+  "preprocessing_steps": [
+    "Queried OSM features using commercial, retail, marketplace, food, warehouse, and landuse tags",
+    "Removed missing and invalid geometries",
+    "Selected stable POI attributes",
+    "Reprojected POIs to EPSG:32748",
+    "Saved to GeoPackage"
+  ],
+  "unit": "POI geometry",
+  "citation_apa": "OpenStreetMap contributors. (2025). OpenStreetMap geographic database.",
+  "citation_bibtex": "@misc{osm2025, title={OpenStreetMap geographic database}, author={{OpenStreetMap contributors}}, year={2025}, url={https://www.openstreetmap.org/}}",
+  "file_size_mb": 5.812,
+  "crs": "EPSG:32748",
+  "download_tool": "OSMnx",
+  "poi_tags": {
+    "shop": [
+      "supermarket",
+      "convenience",
+      "department_store",
+      "mall",
+      "greengrocer",
+      "general",
+      "wholesale"
+    ],
+    "amenity": [
+      "marketplace",
+      "restaurant",
+      "fast_food",
+      "cafe"
+    ],
+    "building": [
+      "retail",
+      "commercial",
+      "warehouse"
+    ],
+    "landuse": [
+      "commercial",
+      "retail",
+      "industrial"
+    ]
+  },
+  "interpretation_limit": "OSM POI completeness varies spatially and is treated as an accessibility and commercial intensity proxy."
+}

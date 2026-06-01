@@ -1,0 +1,20 @@
+{
+  "dataset_name": "LISA clusters for demand and underserved quick-commerce proxy",
+  "source": "Derived from service coverage grid",
+  "source_url": "Local pipeline output",
+  "license": "Derived open data",
+  "access_date": "2026-05-30",
+  "spatial_resolution": "1000 m grid",
+  "temporal_coverage": "Scenario-based spatial statistics",
+  "preprocessing_steps": [
+    "Loaded service coverage grid",
+    "Computed KNN spatial weights with k=8",
+    "Computed Local Moran's I with 999 permutations",
+    "Classified LISA clusters into High-High, Low-Low, High-Low, Low-High, and Not significant"
+  ],
+  "unit": "Local Moran's I and cluster label",
+  "citation_apa": "Anselin, L. (1995). Local indicators of spatial association, LISA. Geographical Analysis.",
+  "citation_bibtex": "@article{anselin1995lisa, title={Local indicators of spatial association, LISA}, author={Anselin, Luc}, journal={Geographical Analysis}, year={1995}}",
+  "file_size_mb": 3.516,
+  "crs": "EPSG:32748"
+}

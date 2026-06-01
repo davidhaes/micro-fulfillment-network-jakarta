@@ -1,0 +1,25 @@
+{
+  "dataset_name": "VIIRS nighttime lights annual mean",
+  "source": "NOAA VIIRS DNB monthly VCMCFG via Google Earth Engine",
+  "source_url": "https://developers.google.com/earth-engine/datasets/catalog/NOAA_VIIRS_DNB_MONTHLY_V1_VCMCFG",
+  "license": "Public domain, NOAA open data",
+  "access_date": "2026-05-30",
+  "spatial_resolution": "1000 m analysis grid aggregated from approximately 500 m source",
+  "temporal_coverage": "2024-01-01 to 2024-12-31",
+  "preprocessing_steps": [
+    "Filtered VIIRS monthly VCMCFG collection to target year",
+    "Selected avg_rad band",
+    "Computed annual mean composite",
+    "Clipped raster to Greater Jakarta AOI",
+    "Aggregated and reprojected raster to EPSG:32748 at 1 km analysis grid",
+    "Clipped negative radiance values to zero"
+  ],
+  "unit": "nanoWatts per square centimeter per steradian",
+  "citation_apa": "Elvidge, C. D., et al. (2017). VIIRS night-time lights. International Journal of Remote Sensing.",
+  "citation_bibtex": "@article{elvidge2017viirs, title={VIIRS night-time lights}, author={Elvidge, Christopher D. and others}, journal={International Journal of Remote Sensing}, year={2017}}",
+  "file_size_mb": 0.024,
+  "crs": "EPSG:32748",
+  "gee_collection": "NOAA/VIIRS/DNB/MONTHLY_V1/VCMCFG",
+  "target_year": 2024,
+  "interpretation_limit": "Nighttime lights are used as an economic activity proxy and may show blooming or saturation in dense urban cores."
+}

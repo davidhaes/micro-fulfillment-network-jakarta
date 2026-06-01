@@ -1,0 +1,29 @@
+{
+  "dataset_name": "Enhanced speed and service-tier coverage sensitivity",
+  "source": "Derived from extended MFC scenarios",
+  "source_url": "Local pipeline output",
+  "license": "Derived open data",
+  "access_date": "2026-06-01",
+  "spatial_resolution": "1000 m demand grid",
+  "temporal_coverage": "Scenario analysis",
+  "preprocessing_steps": [
+    "Loaded extended selected MFC scenarios",
+    "Evaluated coverage for multiple rider speed assumptions",
+    "Evaluated coverage for 30, 45, and 60 minute service tiers"
+  ],
+  "unit": "Coverage share by MFC count, speed, and service tier",
+  "citation_apa": "Derived speed and service-tier sensitivity analysis from project pipeline.",
+  "citation_bibtex": "@misc{speedServiceSensitivity2025, title={Speed and service-tier coverage sensitivity}, author={Project pipeline}, year={2025}}",
+  "file_size_mb": 0.008,
+  "crs": "Not applicable",
+  "speed_scenarios_kmh": [
+    15,
+    20,
+    25
+  ],
+  "service_tiers_minutes": [
+    30,
+    45,
+    60
+  ]
+}

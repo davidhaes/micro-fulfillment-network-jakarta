@@ -1,0 +1,24 @@
+{
+  "dataset_name": "Operational CO2e emission scenarios for quick-commerce MFC networks",
+  "source": "Derived from optimized network distance outputs and literature-based emission factors",
+  "source_url": "Local pipeline output",
+  "license": "Derived open data",
+  "access_date": "2026-05-30",
+  "spatial_resolution": "Scenario table by MFC count and EV adoption level",
+  "temporal_coverage": "Scenario analysis, not observed emissions",
+  "preprocessing_steps": [
+    "Loaded demand-weighted distance per 100,000 proxy deliveries from optimized network summary",
+    "Computed baseline centralized ICE motorcycle emissions",
+    "Computed blended fleet emissions for EV adoption levels",
+    "Calculated emission reduction percentage relative to centralized ICE baseline"
+  ],
+  "unit": "kg CO2e per 100,000 proxy deliveries",
+  "citation_apa": "Emission calculation follows standard activity data multiplied by emission factor accounting.",
+  "citation_bibtex": "@misc{emissionAccounting2025, title={Scenario-based last-mile delivery emission accounting}, author={Project pipeline}, year={2025}}",
+  "file_size_mb": 0.006,
+  "crs": "Not applicable",
+  "ice_motorcycle_gco2e_per_km": 72.0,
+  "electric_motorcycle_kwh_per_km": 0.035,
+  "grid_gco2e_per_kwh": 650.0,
+  "interpretation_limit": "Results are scenario-based emissions per normalized proxy deliveries, not measured company emissions."
+}

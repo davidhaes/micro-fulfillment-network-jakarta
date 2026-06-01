@@ -1,0 +1,20 @@
+{
+  "dataset_name": "Administrative action typology for quick-commerce logistics",
+  "source": "Derived from administrative demand summary",
+  "source_url": "Local pipeline output",
+  "license": "Derived open data",
+  "access_date": "2026-06-01",
+  "spatial_resolution": "Administrative unit level 2",
+  "temporal_coverage": "Scenario analysis",
+  "preprocessing_steps": [
+    "Loaded administrative unit demand summary",
+    "Dropped unmatched administrative records",
+    "Classified units by demand and underserved score thresholds",
+    "Assigned action-oriented operational typology"
+  ],
+  "unit": "Administrative unit action class",
+  "citation_apa": "Derived administrative action typology from project pipeline.",
+  "citation_bibtex": "@misc{adminActionTypology2025, title={Administrative action typology for quick-commerce logistics}, author={Project pipeline}, year={2025}}",
+  "file_size_mb": 0.004,
+  "crs": "Not applicable"
+}

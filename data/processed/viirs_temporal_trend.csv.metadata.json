@@ -1,0 +1,23 @@
+{
+  "dataset_name": "Greater Jakarta VIIRS nighttime lights temporal trend",
+  "source": "NOAA VIIRS DNB monthly VCMCFG via Google Earth Engine",
+  "source_url": "https://developers.google.com/earth-engine/datasets/catalog/NOAA_VIIRS_DNB_MONTHLY_V1_VCMCFG",
+  "license": "Public domain, NOAA open data",
+  "access_date": "2026-05-30",
+  "spatial_resolution": "AOI-level annual mean at 1 km reduction scale",
+  "temporal_coverage": "2020 to 2024",
+  "preprocessing_steps": [
+    "Filtered VIIRS monthly collection for each year",
+    "Computed annual mean radiance image",
+    "Reduced annual image to Greater Jakarta AOI mean",
+    "Computed Kendall tau trend test",
+    "Computed Sen's slope using Theil-Sen estimator"
+  ],
+  "unit": "nanoWatts per square centimeter per steradian and annual slope",
+  "citation_apa": "Elvidge, C. D., et al. (2017). VIIRS night-time lights. International Journal of Remote Sensing.",
+  "citation_bibtex": "@article{elvidge2017viirs, title={VIIRS night-time lights}, author={Elvidge, Christopher D. and others}, journal={International Journal of Remote Sensing}, year={2017}}",
+  "file_size_mb": 0.001,
+  "crs": "AOI statistic, source raster processed in Earth Engine",
+  "trend_method": "Kendall tau and Sen's slope",
+  "interpretation_limit": "Trend reflects nighttime light intensity, not observed quick-commerce order volume."
+}

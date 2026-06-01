@@ -1,0 +1,23 @@
+{
+  "dataset_name": "Enhanced extended MFC count sensitivity summary",
+  "source": "Derived from demand grid and MFC candidates",
+  "source_url": "Local pipeline output",
+  "license": "Derived open data",
+  "access_date": "2026-06-01",
+  "spatial_resolution": "1000 m demand grid",
+  "temporal_coverage": "Scenario analysis",
+  "preprocessing_steps": [
+    "Loaded processed demand grid and MFC candidates",
+    "Selected top demand cells for computational stability",
+    "Normalized optimization weights to 100,000 proxy deliveries",
+    "Computed corrected Euclidean route-distance matrix",
+    "Ran greedy p-median for extended MFC counts",
+    "Computed 30-minute coverage and distance reduction"
+  ],
+  "unit": "Scenario metrics by MFC count",
+  "citation_apa": "Derived enhanced MFC sensitivity analysis from project pipeline.",
+  "citation_bibtex": "@misc{enhancedMfcSensitivity2025, title={Enhanced MFC count sensitivity analysis}, author={Project pipeline}, year={2025}}",
+  "file_size_mb": 0.002,
+  "crs": "Not applicable",
+  "detour_factor": 1.35
+}
