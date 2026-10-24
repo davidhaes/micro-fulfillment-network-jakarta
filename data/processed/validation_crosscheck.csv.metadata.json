@@ -3,7 +3,7 @@
   "source": "Derived from demand clusters and GADM administrative units",
   "source_url": "Local pipeline output",
   "license": "Derived open data",
-  "access_date": "2026-09-27",
+  "access_date": "2026-10-24",
   "spatial_resolution": "Administrative unit level 2 summary",
   "temporal_coverage": "Composite validation using project demand proxy",
   "preprocessing_steps": [

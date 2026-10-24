@@ -3,7 +3,7 @@
   "source": "Derived from optimized MFC network scenarios",
   "source_url": "Local pipeline output",
   "license": "Derived open data",
-  "access_date": "2026-09-27",
+  "access_date": "2026-10-24",
   "spatial_resolution": "1000 m grid",
   "temporal_coverage": "Scenario-based service coverage analysis",
   "preprocessing_steps": [
@@ -15,6 +15,6 @@
   "unit": "Grid cell with distance, coverage status, and underserved score",
   "citation_apa": "Derived service coverage analysis from open geospatial data.",
   "citation_bibtex": "@misc{serviceCoverage2025, title={Thirty-minute service coverage for Greater Jakarta quick-commerce MFC scenarios}, author={Project pipeline}, year={2025}}",
-  "file_size_mb": 3.031,
+  "file_size_mb": 3.109,
   "crs": "EPSG:32748"
 }

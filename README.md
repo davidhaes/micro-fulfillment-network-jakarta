@@ -6,19 +6,26 @@ The pipeline combines Google Earth Engine, WorldPop, VIIRS nighttime lights, Dyn
 
 ## Executive Takeaway
 
-Thirty-minute quick commerce across Greater Jakarta is a question of how many hubs, not a hard limit.
+A 30 minute promise across Greater Jakarta needs about 25 hubs, not 60, as long as riders keep moving.
 
-With every demand cell counted and every built-up cell allowed as a candidate site, coverage keeps rising as hubs are added: 30 hubs reach 81.6 percent of proxy demand within 30 minutes and 40 hubs pass 90 percent. The last tenth of demand sits in the Bogor, Bekasi and Tangerang regencies, where a longer service tier or rider staging points are cheaper than the extra hubs full coverage needs. Distance reduction does most of the decarbonisation work; electrifying the fleet on top of it adds the rest.
+With demand anchored to population, 25 hubs put 90.6 percent of proxy demand within a 30 minute ride at 20 km/h and 30 hubs 92.5 percent; doubling to 60 hubs only reaches 97.2 percent. Rider speed matters as much as hub count: at 15 km/h, or with about 7 minutes of each 30 lost to picking and handover, 30 hubs cover 81.2 percent. Almost all uncovered demand (99 percent) sits in the Bogor, Bekasi and Tangerang regencies, where a 45 minute tier or rider staging points are cheaper than more stores. On the same network, a fully electric fleet cuts CO2e per delivery by 58 to 68 percent depending on the grid factor.
 
 ## Key Results
 
-* 30 optimized MFCs cover 81.6% of proxy demand within 30 minutes at 20 km/h.
-* 40 MFCs reach 91.9% and 60 MFCs 98.0%. A network optimized for coverage rather than distance reaches almost the same values (82.5% at 30 hubs), so the distance-optimal network gives up little coverage.
-* 30 MFCs reduce demand-weighted last-mile distance by 82.7% against a single central fulfillment hub.
-* 30 MFCs plus 50% electric motorcycle adoption reduce scenario CO2e by 88.6% per 100,000 proxy deliveries; with 100% EV adoption, 94.5%.
-* With 30 MFCs, a 45-minute tier at 20 km/h reaches 98.4% coverage.
-* Demand is strongly clustered (Moran's I = 0.944); demand left outside the 30-minute reach is also clustered (Moran's I = 0.621), both p = 0.001.
-* The largest volumes of uncovered demand are in the Bogor regency (30% of its demand), the Bekasi regency (27%) and North Jakarta (22%).
+* 30 optimized MFCs cover 92.5% of proxy demand within 30 minutes at 20 km/h; 25 MFCs reach 90.6% and 15 reach 80.9%.
+* 40 MFCs reach 95.2% and 60 MFCs 97.2%. A greedy coverage-maximising network reaches 95.7% at 30 hubs.
+* At 15 km/h the 30-hub network covers 81.2%; 45 hubs are needed to reach 90%.
+* With 30 MFCs, a 45-minute tier at 20 km/h reaches 97.6% coverage.
+* On the 30-hub network an average delivery is 5.7 km one way (6.9 km with 20 hubs). A petrol fleet emits about 410 gCO2e per delivery; 50% electric adoption cuts this by 29 to 34% and 100% by 58 to 68%, at grid factors of 870 and 650 gCO2e/kWh (`outputs/tables/emission_grid_sensitivity.csv`).
+* Uncovered demand: Bogor regency 25% of its demand, Bekasi regency 23%, Tangerang regency 19%; together 99% of all uncovered demand.
+
+## Correction, October 2026
+
+A second audit found that demand had been weighted by the composite index alone. A 1 km cell's index runs from about 0.3 in sparse fringe land to 0.9 in the dense core, while population density differs by a factor of twenty or more, so the fringe regencies received more demand than all of DKI Jakarta. `scripts/09_build_demand_index.py` now weights each cell's population by the index, which puts 34% of demand in DKI Jakarta, close to its share of the region's population. All optimisation outputs were regenerated.
+
+The same audit replaced the emission headline. Reductions of up to 94.5% were measured against one central hub serving the whole region, a network no operator runs. `scripts/11b_grid_sensitivity.py` reports electrification against a petrol fleet on the same network under two grid factors. The action typology now ranks regencies by the volume of uncovered demand rather than a share threshold alone, which moves the Tangerang regency into the fringe class.
+
+Version 2 (September 2026) reported 81.6% coverage with 30 hubs, a 98.0% figure for 60 hubs and uncovered shares of 30% (Bogor) and 27% (Bekasi). Those figures are superseded.
 
 ## Correction, September 2026
 
@@ -37,7 +44,7 @@ The study area is the road-based Greater Jakarta metropolitan logistics region g
 
 Demand in this project is a latent open-data proxy, not actual platform order volume. The demand proxy is derived from WorldPop population, VIIRS nighttime lights, Dynamic World built-up probability, OpenStreetMap road accessibility and OpenStreetMap commercial POI density.
 
-Emissions are scenario-based per 100,000 proxy deliveries, not measured company emissions. The grid emission factor is an assumption (650 gCO2e/kWh); at 870 gCO2e/kWh, closer to published Java-Bali grid values, the 30-hub, 50%-EV reduction falls from 88.6% to about 87.7%. Distance is corrected Euclidean distance (detour factor 1.35), not live time-dependent routing.
+Emissions are scenario-based per 100,000 proxy deliveries, not measured company emissions. The grid emission factor is an assumption; results are given at 650 and at 870 gCO2e/kWh, the latter closer to published Java-Bali grid values. Distance is corrected Euclidean distance (detour factor 1.35), not live time-dependent routing.
 
 ## Method Overview
 
@@ -55,13 +62,13 @@ Emissions are scenario-based per 100,000 proxy deliveries, not measured company 
 
 ![Optimized MFC Network](docs/assets/01_optimized_mfc_network.png)
 
-The 30-hub network cuts demand-weighted distance by 82.7% against a central hub.
+Hubs follow the population: the core cities hold most of them, with a ring of hubs in the inner suburbs.
 
 ### 2. Thirty-Minute Service Coverage
 
 ![Thirty-Minute Service Coverage](docs/assets/02_thirty_minute_service_coverage.png)
 
-81.6% of proxy demand sits within 30 minutes of the 30-hub network at 20 km/h. The uncovered remainder is on the fringes.
+92.5% of proxy demand sits within 30 minutes of the 30-hub network at 20 km/h. The uncovered remainder is on the fringes.
 
 ### 3. Underserved Demand Hotspots
 
@@ -73,19 +80,19 @@ Uncovered demand clusters spatially (Moran's I = 0.621, p = 0.001), mostly in th
 
 ![Extended MFC Coverage Curve](docs/assets/04_extended_mfc_coverage_curve.png)
 
-Coverage rises from 19.5% with 5 hubs to 81.6% with 30, 91.9% with 40 and 98.0% with 60. There is no plateau in this range.
+Coverage rises from 37.8% with 5 hubs to 90.6% with 25 and 92.5% with 30, then flattens: 95.2% with 40 and 97.2% with 60. At 15 km/h every count covers far less.
 
 ### 5. Speed and Service-Tier Sensitivity
 
 ![Speed Service Sensitivity](docs/assets/05_speed_service_sensitivity_heatmap.png)
 
-A 45-minute tier lifts the 30-hub network from 81.6% to 98.4% coverage at 20 km/h, which is the cheaper route to near-full coverage than doubling the network.
+A 45-minute tier lifts the 30-hub network from 92.5% to 97.6% coverage at 20 km/h, which is the cheaper route to near-full coverage than doubling the network.
 
-### 6. CO2e Reduction Pathway
+### 6. CO2e per Delivery
 
-![Emission Scenario Pathway](docs/assets/06_emission_scenario_pathway.png)
+![CO2e per delivery](docs/assets/06_emission_scenario_pathway.png)
 
-Shorter distance delivers most of the reduction; electrification compounds it.
+Per delivery CO2e by network size and fleet electrification, under grid factors of 650 and 870 gCO2e/kWh, is in `outputs/figures/charts/emission_per_delivery.png`.
 
 ### 7. Administrative Action Typology
 
@@ -97,11 +104,11 @@ Units are classed by demand intensity and by the share of their demand outside t
 
 ### Core urban areas
 
-Most demand in Jakarta, Kota Tangerang, Tangerang Selatan, Depok, Kota Bekasi and Kota Bogor is already inside the 30-minute reach. Densify inventory, electrify the fleet and improve charging access. North Jakarta is the exception, with 22% of its demand outside the reach, and warrants additional core hubs.
+Demand in Jakarta, Kota Tangerang, Tangerang Selatan, Depok, Kota Bekasi and Kota Bogor is inside the 30-minute reach. Densify inventory, cut picking time, electrify the fleet and improve charging access.
 
 ### Fringe regencies
 
-The Bogor and Bekasi regencies hold the largest uncovered volumes. Add hubs inside contiguous uncovered clusters, use rider staging points, and offer a 45-minute tier where hubs are not justified.
+The Bogor, Bekasi and Tangerang regencies hold 99% of the uncovered volume. Use rider staging points at the edge of the covered area and offer a 45-minute tier where hubs are not justified.
 
 ## Reproducing
 

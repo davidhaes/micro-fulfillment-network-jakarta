@@ -150,7 +150,7 @@ def plot_bar_ranking(
 
     plot_frame = frame.sort_values(value, ascending=False).head(top_n).copy()
     fig, ax = plt.subplots(figsize=(10, 6))
-    sns.barplot(data=plot_frame, x=value, y=category, color="#2C7FB8", ax=ax)
+    sns.barplot(data=plot_frame, x=value, y=category, color="#3f6f73", ax=ax)
 
     ax.set_title(title, loc="left", pad=18)
     ax.text(0.0, 1.01, subtitle, transform=ax.transAxes, ha="left", va="bottom", fontsize=11)

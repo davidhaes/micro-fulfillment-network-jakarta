@@ -6,6 +6,7 @@ from pathlib import Path
 
 import geopandas as gpd
 import matplotlib.pyplot as plt
+from matplotlib.colors import LinearSegmentedColormap, TwoSlopeNorm
 import numpy as np
 import pandas as pd
 import seaborn as sns
@@ -226,7 +227,10 @@ def build_admin_action_typology(admin_summary: pd.DataFrame) -> pd.DataFrame:
             action_labels.append("Add hubs in the core")
             action_priorities.append("High")
             action_rationales.append("Dense demand with a material share outside the 30-minute reach.")
-        elif uncovered >= uncovered_threshold and uncovered_volume >= 0.1 * large_unit_deliveries:
+        elif uncovered_volume >= 0.1 * large_unit_deliveries:
+            # Ranked on the volume left outside the reach, not only its share:
+            # a large regency just under the share threshold can strand more
+            # orders than a small one above it (October 2026 audit).
             action_labels.append("Fringe hubs or staging points")
             action_priorities.append("High")
             action_rationales.append(
@@ -257,74 +261,36 @@ def build_admin_action_typology(admin_summary: pd.DataFrame) -> pd.DataFrame:
     return frame
 
 
-def plot_extended_coverage_curve(frame: pd.DataFrame, output_path: Path) -> None:
-    """Plot coverage and distance reduction across extended MFC scenarios."""
+def plot_extended_coverage_curve(frame: pd.DataFrame, output_path: Path, sensitivity: pd.DataFrame | None = None) -> None:
+    """Coverage against hub count, with the slower-rider case when the sensitivity table is given.
+
+    Distance reduction is left out: it is measured against one central hub,
+    a network nobody runs, so it adds a large number without informing a choice.
+    """
     set_publication_theme()
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
-    fig, ax1 = plt.subplots(figsize=(11, 6.2))
-    ax2 = ax1.twinx()
-
-    plot_frame = frame.sort_values("mfc_count").copy()
-    plot_frame["coverage_percent"] = plot_frame["coverage_share"] * 100.0
-
-    ax1.plot(
-        plot_frame["mfc_count"],
-        plot_frame["coverage_percent"],
-        color="#2E7D32",
-        marker="o",
-        linewidth=2.4,
-        label="30-minute coverage, distance-optimal network",
-    )
+    fig, ax = plt.subplots(figsize=(11, 6))
+    plot_frame = frame.sort_values("mfc_count")
+    ax.plot(plot_frame["mfc_count"], plot_frame["coverage_share"] * 100.0, color="#b63a1c", marker="o",
+            linewidth=2.4, label="Distance-optimal network, 20 km/h")
     if "max_coverage_share" in plot_frame:
-        ax1.plot(
-            plot_frame["mfc_count"],
-            plot_frame["max_coverage_share"] * 100.0,
-            color="#81C784",
-            marker="o",
-            linestyle="--",
-            linewidth=1.8,
-            label="30-minute coverage, coverage-optimal network",
-        )
-    ax2.plot(
-        plot_frame["mfc_count"],
-        plot_frame["distance_reduction_percent"],
-        color="#C62828",
-        marker="s",
-        linewidth=2.1,
-        label="Distance reduction",
-    )
-
-    ax1.axhline(90, color="#333333", linestyle="--", linewidth=1.0)
-    ax1.text(
-        plot_frame["mfc_count"].min(),
-        91,
-        "90% coverage target",
-        fontsize=8.5,
-        color="#333333",
-    )
-
-    ax1.set_title("Extended MFC Count Sensitivity", loc="left", pad=18)
-    ax1.text(
-        0,
-        1.01,
-        "Coverage and distance reduction under 20 km/h and 30-minute service threshold",
-        transform=ax1.transAxes,
-        ha="left",
-        fontsize=10.5,
-    )
-
-    ax1.set_xlabel("Number of MFCs")
-    ax1.set_ylabel("Covered proxy demand, percent")
-    ax2.set_ylabel("Distance reduction, percent")
-
-    ax1.set_ylim(0, 100)
-    ax1.grid(True, alpha=0.3)
-
-    lines_1, labels_1 = ax1.get_legend_handles_labels()
-    lines_2, labels_2 = ax2.get_legend_handles_labels()
-    ax1.legend(lines_1 + lines_2, labels_1 + labels_2, loc="lower right", frameon=True)
-
+        ax.plot(plot_frame["mfc_count"], plot_frame["max_coverage_share"] * 100.0, color="#d98c6c", marker="o",
+                linestyle="--", linewidth=1.6, label="Greedy coverage-maximising network, 20 km/h")
+    if sensitivity is not None:
+        slow = sensitivity[(sensitivity["speed_kmh"] == 15) & (sensitivity["service_minutes"] == 30)].sort_values("mfc_count")
+        ax.plot(slow["mfc_count"], slow["coverage_share"] * 100.0, color="#15171a", marker="s", linewidth=2.0,
+                label="Distance-optimal network, 15 km/h (or about 7 minutes lost to picking)")
+    ax.axhline(90, color="#8c877c", linestyle=":", linewidth=1.0)
+    ax.text(plot_frame["mfc_count"].max(), 90.8, "90%", fontsize=8.5, color="#6f7378", ha="right")
+    ax.set_title("Share of demand within a 30-minute ride, by number of hubs", loc="left", pad=22)
+    ax.text(0, 1.015, "Gains slow down once the core is covered; rider speed moves coverage as much as adding hubs",
+            transform=ax.transAxes, ha="left", fontsize=9.5, color="#6f7378")
+    ax.set_xlabel("Number of hubs")
+    ax.set_ylabel("Proxy demand covered (%)")
+    ax.set_ylim(0, 100)
+    ax.grid(axis="y")
+    ax.legend(loc="lower right")
     fig.savefig(output_path, dpi=300, bbox_inches="tight")
     plt.close(fig)
 
@@ -360,8 +326,11 @@ def plot_speed_service_heatmap(frame: pd.DataFrame, output_path: Path) -> None:
     fig, ax = plt.subplots(figsize=(12, 6.5))
     sns.heatmap(
         pivot,
-        cmap="YlGnBu",
+        # Centred on the 90 percent target: rust below it, teal above it.
+        cmap=LinearSegmentedColormap.from_list("site", ["#b63a1c", "#e7b8a7", "#f4f2ec", "#9fb8b5", "#3f6f73"]),
+        norm=TwoSlopeNorm(vmin=20, vcenter=90, vmax=100),
         annot=True,
+        annot_kws={"color": "#15171a"},
         fmt=".1f",
         linewidths=0.35,
         linecolor="white",
@@ -369,16 +338,16 @@ def plot_speed_service_heatmap(frame: pd.DataFrame, output_path: Path) -> None:
         ax=ax,
     )
 
-    ax.set_title("Speed and Service-Tier Coverage Sensitivity", loc="left", pad=18)
+    ax.set_title("Coverage by hub count, rider speed and service tier", loc="left", pad=18)
     ax.text(
         0,
         1.01,
-        "Coverage share by MFC count, rider speed assumption, and service-level threshold",
+        "Share of proxy demand within reach; colour turns teal above the 90 percent target",
         transform=ax.transAxes,
         ha="left",
         fontsize=10.5,
     )
-    ax.set_xlabel("Number of MFCs")
+    ax.set_xlabel("Number of hubs")
     ax.set_ylabel("Speed and service-tier scenario")
 
     fig.savefig(output_path, dpi=300, bbox_inches="tight")
@@ -391,16 +360,20 @@ def plot_admin_typology(frame: pd.DataFrame, output_path: Path) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     plot_frame = frame.copy()
-    plot_frame["admin_unit"] = plot_frame["NAME_2"].astype(str)
+    # GADM writes "KotaBekasi"; regencies share names with their cities.
+    plot_frame["admin_unit"] = (
+        plot_frame["NAME_2"].astype(str).str.replace(r"(?<=[a-z])(?=[A-Z])", " ", regex=True)
+        .replace({"Bogor": "Bogor regency", "Bekasi": "Bekasi regency", "Tangerang": "Tangerang regency"})
+    )
     plot_frame["uncovered_percent"] = plot_frame["uncovered_demand_share"] * 100.0
     plot_frame = plot_frame.sort_values("uncovered_proxy_deliveries_per_100k", ascending=False).head(13)
 
     palette = {
-        "Add hubs in the core": "#B2182B",
-        "Fringe hubs or staging points": "#D6604D",
-        "Densify and electrify": "#1B9E77",
-        "Tiered service level": "#E6AB02",
-        "Maintain and monitor": "#9E9E9E",
+        "Add hubs in the core": "#b63a1c",
+        "Fringe hubs or staging points": "#d98c6c",
+        "Densify and electrify": "#3f6f73",
+        "Tiered service level": "#c9a227",
+        "Maintain and monitor": "#8c877c",
     }
 
     fig, ax = plt.subplots(figsize=(11, 6.3))
@@ -414,7 +387,7 @@ def plot_admin_typology(frame: pd.DataFrame, output_path: Path) -> None:
         ax=ax,
     )
 
-    ax.set_title("Administrative Action Typology", loc="left", pad=18)
+    ax.set_title("Recommended action by regency and city", loc="left", pad=18)
     ax.text(
         0,
         1.01,
@@ -427,7 +400,7 @@ def plot_admin_typology(frame: pd.DataFrame, output_path: Path) -> None:
     ax.set_xlabel("Proxy demand outside 30-minute reach, percent")
     ax.set_ylabel("")
     ax.grid(True, axis="x", alpha=0.3)
-    ax.legend(title="Recommended action", loc="lower right", frameon=True)
+    ax.legend(title="Recommended action", loc="lower right", frameon=False)
 
     fig.savefig(output_path, dpi=300, bbox_inches="tight")
     plt.close(fig)
@@ -605,7 +578,7 @@ def main() -> None:
     )
 
     logger.info("Generating enhanced charts.")
-    plot_extended_coverage_curve(extended_summary, extended_chart_path)
+    plot_extended_coverage_curve(extended_summary, extended_chart_path, sensitivity)
     plot_speed_service_heatmap(sensitivity, heatmap_path)
     plot_admin_typology(typology, typology_chart_path)
 

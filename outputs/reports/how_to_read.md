@@ -18,22 +18,22 @@ Dokumen ini menjelaskan arti setiap metrik utama dalam project. Semua metrik dem
 
 * Thirty-minute service coverage
   * Unit: persentase proxy demand yang tercakup.
-  * Nilai skenario referensi: 81.6%.
-  * Label interpretasi: Moderate.
-  * Deskripsi: Coverage is operationally meaningful but below the 90 percent target.
-  * Rekomendasi: Add MFCs in underserved high-demand clusters before scaling fleet electrification.
+  * Nilai skenario referensi: 90.6%.
+  * Label interpretasi: High.
+  * Deskripsi: At least 90 percent of demand proxy is covered within the 30-minute service threshold.
+  * Rekomendasi: Use this configuration as a minimum service-level candidate and compare marginal cost against higher MFC counts.
   * Referensi: Quick commerce service-level convention is represented by a 30-minute delivery threshold; threshold is treated as an operational scenario assumption.
 
 * Demand-weighted distance
   * Unit: kilometer per 100.000 proxy deliveries.
-  * Baseline: 4,303,243.5 km.
-  * Skenario referensi: 744,628.6 km.
+  * Baseline: 3,088,235.0 km.
+  * Skenario referensi: 623,059.1 km.
   * Threshold hipotesis: H1 menguji minimal 20 persen penurunan jarak.
   * Contoh interpretasi: penurunan jarak menunjukkan fulfillment lebih dekat ke demand proxy, tetapi belum memasukkan biaya inventory duplication.
 
 * Emission reduction
   * Unit: persen pengurangan kg CO2e per 100.000 proxy deliveries.
-  * Skenario terbaik: 94.5% pada 30 MFC dan 100 persen EV adoption.
+  * Skenario terbaik: 94.2% pada 30 MFC dan 100 persen EV adoption.
   * Label interpretasi: Transformational.
   * Deskripsi: The scenario reduces operational CO2e by at least half relative to the centralized ICE baseline.
   * Rekomendasi: Prioritize implementation if investment cost and inventory complexity remain acceptable.
@@ -42,7 +42,7 @@ Dokumen ini menjelaskan arti setiap metrik utama dalam project. Semua metrik dem
 * Global Moran's I
   * Unit: statistik autocorrelation spasial.
   * Demand index Moran's I: 0.944, p-value 0.001.
-  * Underserved score Moran's I: 0.621, p-value 0.001.
+  * Underserved score Moran's I: 0.769, p-value 0.001.
   * Label interpretasi demand: Strong positive spatial autocorrelation.
   * Deskripsi: High and low values are spatially clustered rather than randomly distributed.
   * Rekomendasi: Use LISA clusters to target spatially contiguous intervention zones.

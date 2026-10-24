@@ -39,30 +39,30 @@ from micro_fulfillment_network_jakarta.validators import require_file, validate_
 DEMAND_CMAP = "YlOrRd"
 PRIORITY_CMAP = "YlOrRd"
 
-MFC_COLOR = "#C62828"
+MFC_COLOR = "#b63a1c"
 MFC_EDGE_COLOR = "#FFFFFF"
 
-ADMIN_BOUNDARY_COLOR = "#333333"
+ADMIN_BOUNDARY_COLOR = "#15171a"
 ADMIN_FILL = "#DCEEFF"
 
-COVERED_COLOR = "#2E7D32"
-UNCOVERED_COLOR = "#FDD49E"
+COVERED_COLOR = "#3f6f73"
+UNCOVERED_COLOR = "#e2c3a8"
 
 LISA_COLORS = {
-    "High-High": "#B2182B",
-    "High-Low": "#EF8A62",
-    "Low-High": "#67A9CF",
-    "Low-Low": "#2166AC",
+    "High-High": "#b63a1c",
+    "High-Low": "#d98c6c",
+    "Low-High": "#9fb8b5",
+    "Low-Low": "#3f6f73",
     "Not significant": "#E0E0E0",
     "Not evaluated": "#F5F5F5",
 }
 
 CLUSTER_COLORS = {
-    "High-demand underserved priority": "#B2182B",
-    "High-demand accessible core": "#1B9E77",
-    "Lower-demand peripheral": "#6A51A3",
-    "Mixed urban opportunity": "#E6AB02",
-    "Unclassified": "#BDBDBD",
+    "High-demand underserved priority": "#b63a1c",
+    "High-demand accessible core": "#3f6f73",
+    "Lower-demand peripheral": "#15171a",
+    "Mixed urban opportunity": "#c9a227",
+    "Unclassified": "#bcb7ab",
 }
 
 
@@ -101,7 +101,11 @@ def repair_geodataframe_for_plotting(gdf: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
 
 
 def choose_reference_mfc_count(summary: pd.DataFrame) -> int:
-    """Choose the smallest MFC count reaching 90 percent coverage, otherwise best available coverage."""
+    """Use the 30-hub network when it was solved, so the maps match the action
+    typology and emission tables, which are all built on 30 hubs. Otherwise
+    take the smallest count reaching 90 percent coverage."""
+    if (summary["mfc_count"] == 30).any():
+        return 30
     eligible = summary[summary["coverage_share"] >= 0.90].sort_values("mfc_count")
     if not eligible.empty:
         return int(eligible.iloc[0]["mfc_count"])
@@ -205,7 +209,7 @@ def add_admin_labels(ax, admin: gpd.GeoDataFrame) -> None:
             ha="center",
             va="center",
             linespacing=0.88,
-            color="#111111",
+            color="#15171a",
             zorder=80,
             bbox={
                 "facecolor": (1.0, 1.0, 1.0, 0.72),
@@ -255,7 +259,7 @@ def create_map_figure(title: str, subtitle: str, figsize: tuple[float, float] = 
     fig, ax = plt.subplots(figsize=figsize)
     fig.subplots_adjust(left=0.035, right=0.985, top=0.875, bottom=0.060)
 
-    ax.set_title(title, loc="left", pad=32, fontsize=15.5, fontweight="bold")
+    ax.set_title(title, loc="left", pad=32, fontsize=14)
     ax.text(
         0.0,
         1.020,
@@ -264,7 +268,7 @@ def create_map_figure(title: str, subtitle: str, figsize: tuple[float, float] = 
         ha="left",
         va="bottom",
         fontsize=10.7,
-        color="#222222",
+        color="#15171a",
     )
 
     return fig, ax
@@ -321,8 +325,8 @@ def add_discrete_legend_card(
         ha="left",
         va="top",
         fontsize=10.0,
-        fontweight="bold",
-        color="#111111",
+        fontweight="semibold",
+        color="#15171a",
         zorder=120,
     )
 
@@ -348,7 +352,7 @@ def add_discrete_legend_card(
     legend.set_zorder(130)
 
     for text in legend.get_texts():
-        text.set_color("#111111")
+        text.set_color("#15171a")
 
     for legend_handle in legend.legend_handles:
         try:
@@ -380,8 +384,8 @@ def add_continuous_legend_card(
         ha="left",
         va="top",
         fontsize=10.0,
-        fontweight="bold",
-        color="#111111",
+        fontweight="semibold",
+        color="#15171a",
         zorder=120,
     )
 
@@ -399,11 +403,11 @@ def add_continuous_legend_card(
     midpoint = (vmin + vmax) / 2.0
     cbar.set_ticks([vmin, midpoint, vmax])
     cbar.set_ticklabels([format_tick(vmin), format_tick(midpoint), format_tick(vmax)])
-    cbar.ax.tick_params(labelsize=8.8, pad=2, colors="#111111")
+    cbar.ax.tick_params(labelsize=8.8, pad=2, colors="#15171a")
     cbar.outline.set_linewidth(0.7)
 
     for label in cbar.ax.get_xticklabels():
-        label.set_color("#111111")
+        label.set_color("#15171a")
         label.set_alpha(1.0)
 
 
@@ -431,8 +435,8 @@ def add_combined_continuous_symbol_card(
         ha="left",
         va="top",
         fontsize=10.0,
-        fontweight="bold",
-        color="#111111",
+        fontweight="semibold",
+        color="#15171a",
         zorder=120,
     )
 
@@ -450,11 +454,11 @@ def add_combined_continuous_symbol_card(
     midpoint = (vmin + vmax) / 2.0
     cbar.set_ticks([vmin, midpoint, vmax])
     cbar.set_ticklabels([format_tick(vmin), format_tick(midpoint), format_tick(vmax)])
-    cbar.ax.tick_params(labelsize=8.4, pad=2, colors="#111111")
+    cbar.ax.tick_params(labelsize=8.4, pad=2, colors="#15171a")
     cbar.outline.set_linewidth(0.7)
 
     for label in cbar.ax.get_xticklabels():
-        label.set_color("#111111")
+        label.set_color("#15171a")
         label.set_alpha(1.0)
 
     wrapped_handles = []
@@ -478,7 +482,7 @@ def add_combined_continuous_symbol_card(
     legend.set_zorder(130)
 
     for text in legend.get_texts():
-        text.set_color("#111111")
+        text.set_color("#15171a")
 
     for legend_handle in legend.legend_handles:
         try:
@@ -503,7 +507,7 @@ def finalize_projected_map(ax, crs: str, source: str, scale_km: float = 10.0) ->
 def plot_overview_map(aoi: gpd.GeoDataFrame, admin: gpd.GeoDataFrame, output_dir: Path) -> None:
     """Plot AOI overview map."""
     fig, ax = create_map_figure(
-        title="Greater Jakarta Quick-Commerce Logistics Study Area",
+        title="Greater Jakarta study area",
         subtitle="Road-based metropolitan AOI from GADM 4.1 administrative units",
     )
 
@@ -534,8 +538,8 @@ def plot_demand_index_map(grid: gpd.GeoDataFrame, admin: gpd.GeoDataFrame, outpu
     validate_colormap(DEMAND_CMAP)
 
     fig, ax = create_map_figure(
-        title="Quick-Commerce Demand Suitability",
-        subtitle="Open-data latent demand proxy from population, nighttime lights, built-up intensity, road access, and POI density",
+        title="Quick commerce demand proxy",
+        subtitle="Population weighted by a propensity index from night lights, built-up intensity, road access and POI density",
     )
 
     set_map_extent(ax, admin)
@@ -589,7 +593,7 @@ def plot_demand_index_map(grid: gpd.GeoDataFrame, admin: gpd.GeoDataFrame, outpu
     plt.close(fig)
 
     fig_sq, ax_sq = create_map_figure(
-        title="Quick-Commerce Demand Suitability",
+        title="Quick commerce demand proxy",
         subtitle="Greater Jakarta, open-data latent demand proxy",
     )
 
@@ -630,7 +634,7 @@ def plot_optimized_mfc_network(
 ) -> None:
     """Plot selected MFC network over demand background."""
     fig, ax = create_map_figure(
-        title=f"Optimized Micro-Fulfillment Network, p={p_value}",
+        title=f"Optimised micro-fulfillment network, {p_value} hubs",
         subtitle=f"Demand-weighted p-median network, 30-minute modeled coverage={coverage_share:.1%}",
     )
 
@@ -703,7 +707,7 @@ def plot_optimized_mfc_network(
     plt.close(fig)
 
     fig_sq, ax_sq = create_map_figure(
-        title=f"Optimized Micro-Fulfillment Network, p={p_value}",
+        title=f"Optimised micro-fulfillment network, {p_value} hubs",
         subtitle=f"Demand-weighted p-median network, 30-minute modeled coverage={coverage_share:.1%}",
     )
 
@@ -769,7 +773,7 @@ def plot_service_coverage_map(
     column = f"covered_30min_p{p_value}"
 
     fig, ax = create_map_figure(
-        title=f"Thirty-Minute Service Coverage, p={p_value}",
+        title=f"Thirty minute service coverage, {p_value} hubs",
         subtitle="Covered cells are within the modeled 30-minute route-distance threshold",
     )
 
@@ -830,7 +834,7 @@ def plot_lisa_hotspot_map(lisa: gpd.GeoDataFrame, admin: gpd.GeoDataFrame, outpu
     categories = ["High-High", "High-Low", "Low-High", "Low-Low", "Not significant", "Not evaluated"]
 
     fig, ax = create_map_figure(
-        title="Underserved Demand Hotspots",
+        title="Clusters of demand outside the 30 minute reach",
         subtitle="Local Moran's I clusters for demand cells outside the 30-minute coverage threshold",
     )
 
@@ -853,7 +857,7 @@ def plot_lisa_hotspot_map(lisa: gpd.GeoDataFrame, admin: gpd.GeoDataFrame, outpu
 
     high_high = lisa[lisa[cluster_column] == "High-High"]
     if not high_high.empty:
-        high_high.boundary.plot(ax=ax, color="#7F0000", linewidth=0.95, zorder=6)
+        high_high.boundary.plot(ax=ax, color="#7a2612", linewidth=0.95, zorder=6)
 
     add_admin_labels(ax, admin)
 
@@ -904,7 +908,7 @@ def plot_emission_priority_map(
     )
 
     fig, ax = create_map_figure(
-        title="Decarbonization Priority Surface",
+        title="Decarbonisation priority surface",
         subtitle="High demand and longer nearest-MFC distance define priority intervention areas",
     )
 
@@ -978,7 +982,7 @@ def plot_cluster_map(clusters: gpd.GeoDataFrame, admin: gpd.GeoDataFrame, output
     labels = [label for label in label_order if label in set(plot_clusters["cluster_label"])]
 
     fig, ax = create_map_figure(
-        title="Operational Demand Segments",
+        title="Operational demand segments",
         subtitle="KMeans segmentation of demand, accessibility, POI density, built-up intensity, and underserved score",
     )
 
@@ -988,7 +992,7 @@ def plot_cluster_map(clusters: gpd.GeoDataFrame, admin: gpd.GeoDataFrame, output
         subset = plot_clusters[plot_clusters["cluster_label"] == label]
         subset.plot(
             ax=ax,
-            color=CLUSTER_COLORS.get(label, "#BDBDBD"),
+            color=CLUSTER_COLORS.get(label, "#bcb7ab"),
             edgecolor="none",
             alpha=0.86,
             zorder=2,
@@ -998,7 +1002,7 @@ def plot_cluster_map(clusters: gpd.GeoDataFrame, admin: gpd.GeoDataFrame, output
     add_admin_labels(ax, admin)
 
     handles = [
-        Patch(facecolor=CLUSTER_COLORS.get(label, "#BDBDBD"), edgecolor="none", label=label)
+        Patch(facecolor=CLUSTER_COLORS.get(label, "#bcb7ab"), edgecolor="none", label=label)
         for label in labels
     ]
 

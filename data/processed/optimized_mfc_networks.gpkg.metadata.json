@@ -3,7 +3,7 @@
   "source": "Derived p-median optimization output",
   "source_url": "Local pipeline output",
   "license": "Derived open data",
-  "access_date": "2026-09-27",
+  "access_date": "2026-10-24",
   "spatial_resolution": "Point facilities selected from candidate set",
   "temporal_coverage": "Scenario-based facility location analysis",
   "preprocessing_steps": [

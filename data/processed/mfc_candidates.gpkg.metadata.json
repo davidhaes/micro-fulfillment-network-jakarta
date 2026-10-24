@@ -3,7 +3,7 @@
   "source": "Derived from demand grid and OpenStreetMap commercial POIs",
   "source_url": "Local pipeline output",
   "license": "Derived open data",
-  "access_date": "2026-09-27",
+  "access_date": "2026-10-24",
   "spatial_resolution": "1000 m demand grid with candidate points",
   "temporal_coverage": "Composite proxy using latest available open datasets",
   "preprocessing_steps": [

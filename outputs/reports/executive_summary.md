@@ -6,15 +6,15 @@ Metode utama mencakup pembuatan AOI dari GADM 4.1, preprocessing raster melalui 
 
 Temuan kunci:
 
-* Skenario referensi memilih 30 MFC dengan coverage 81.6% terhadap proxy demand dalam SLA 30 menit.
+* Skenario referensi memilih 25 MFC dengan coverage 90.6% terhadap proxy demand dalam SLA 30 menit.
 
-* Skenario terbaik menurunkan demand-weighted distance sebesar 82.7% dibanding centralized baseline.
+* Skenario terbaik menurunkan demand-weighted distance sebesar 81.6% dibanding centralized baseline.
 
-* Pengurangan CO2e tertinggi mencapai 94.5% pada 30 MFC dan 100 persen EV adoption.
+* Pengurangan CO2e tertinggi mencapai 94.2% pada 30 MFC dan 100 persen EV adoption.
 
 * Sebanyak 70 persen demand proxy terkonsentrasi pada sekitar 48.3% area grid, sehingga expansion planning harus berbasis cluster, bukan pemerataan fasilitas.
 
-* Underserved score memiliki Moran's I 0.621 dengan p-value 0.001, yang menunjukkan apakah gap service membentuk cluster spasial signifikan.
+* Underserved score memiliki Moran's I 0.769 dengan p-value 0.001, yang menunjukkan apakah gap service membentuk cluster spasial signifikan.
 
 Rekomendasi prioritas tinggi:
 

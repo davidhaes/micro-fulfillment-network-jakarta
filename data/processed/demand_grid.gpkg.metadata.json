@@ -3,7 +3,7 @@
   "source": "Derived from WorldPop, VIIRS, Dynamic World, and OpenStreetMap",
   "source_url": "https://www.worldpop.org/; https://www.noaa.gov/; https://dynamicworld.app/; https://www.openstreetmap.org/",
   "license": "Derived open data, see raw metadata for individual licenses",
-  "access_date": "2026-05-30",
+  "access_date": "2026-10-24",
   "spatial_resolution": "1000 m grid",
   "temporal_coverage": "WorldPop latest available year, VIIRS 2024, Dynamic World 2024, OSM latest snapshot",
   "preprocessing_steps": [
@@ -19,7 +19,7 @@
   "unit": "Index from 0 to 1 and normalized proxy deliveries per 100,000",
   "citation_apa": "Derived open-data demand proxy based on WorldPop, VIIRS, Dynamic World, and OpenStreetMap.",
   "citation_bibtex": "@misc{derivedDemand2025, title={Latent quick-commerce demand proxy for Greater Jakarta}, author={Project pipeline}, year={2025}}",
-  "file_size_mb": 2.543,
+  "file_size_mb": 2.594,
   "crs": "EPSG:32748",
   "weights": {
     "population_score": 0.4,

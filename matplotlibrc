@@ -1,0 +1,48 @@
+## Figure style shared with the portfolio site (warm paper, ink, one rust accent).
+## matplotlib reads a file named matplotlibrc from the working directory, so
+## every script run from the project root picks this up without code changes.
+
+font.family:        sans-serif
+font.sans-serif:    Segoe UI, Helvetica Neue, Arial, DejaVu Sans
+font.size:          10
+
+text.color:         15171a
+axes.titlecolor:    15171a
+axes.titlesize:     12
+axes.titleweight:   semibold
+axes.titlelocation: left
+axes.titlepad:      10
+axes.labelcolor:    474b50
+axes.labelsize:     10
+axes.edgecolor:     bcb7ab
+axes.linewidth:     0.8
+axes.spines.top:    False
+axes.spines.right:  False
+axes.grid:          False
+axes.axisbelow:     True
+axes.facecolor:     white
+axes.prop_cycle:    cycler('color', ['b63a1c', '15171a', '8c877c', 'd98c6c', '3f6f73', 'c9a227', '6f7378', 'e2ded3'])
+
+grid.color:         e2ded3
+grid.linewidth:     0.7
+
+xtick.color:        6f7378
+ytick.color:        6f7378
+xtick.labelcolor:   474b50
+ytick.labelcolor:   474b50
+xtick.labelsize:    9
+ytick.labelsize:    9
+
+legend.frameon:     False
+legend.fontsize:    9
+
+figure.facecolor:   white
+figure.titlesize:   13
+figure.titleweight: semibold
+savefig.facecolor:  white
+savefig.dpi:        200
+savefig.bbox:       tight
+
+lines.linewidth:    1.6
+patch.edgecolor:    white
+image.cmap:         YlOrBr

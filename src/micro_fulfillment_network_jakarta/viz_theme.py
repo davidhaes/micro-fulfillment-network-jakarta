@@ -15,26 +15,44 @@ ALLOWED_DIVERGING_CMAPS = ["RdBu_r", "BrBG", "PuOr"]
 ALLOWED_CATEGORICAL_CMAPS = ["tab10", "Set2"]
 BANNED_CMAPS = ["jet", "rainbow", "hsv", "hot", "gist_rainbow", "prism"]
 
-BOUNDARY_COLOR = "#333333"
-HIGHLIGHT_COLOR = "#D32F2F"
+BOUNDARY_COLOR = "#15171a"
+HIGHLIGHT_COLOR = "#b63a1c"
 ANNOTATION_COLOR = "#000000"
-BASEMAP_SOURCE = "CartoDB Positron"
+BASEMAP_SOURCE = "Esri World Gray Canvas"
+
+
+PORTFOLIO_INK = "#15171a"
+PORTFOLIO_ACCENT = "#b63a1c"
+PORTFOLIO_PALETTE = ["#b63a1c", "#15171a", "#8c877c", "#d98c6c", "#3f6f73", "#c9a227"]
 
 
 def set_publication_theme() -> None:
-    """Apply global publication-grade matplotlib and seaborn settings."""
-    sns.set_theme(style="whitegrid")
+    """Apply the figure style shared with the portfolio site: warm neutrals, one rust accent."""
+    sns.set_theme(style="white", palette=PORTFOLIO_PALETTE)
     plt.rcParams.update(
         {
             "figure.dpi": 150,
             "savefig.dpi": 300,
-            "font.family": "DejaVu Sans",
-            "axes.titlesize": 14,
-            "axes.titleweight": "bold",
+            "font.family": "sans-serif",
+            "font.sans-serif": ["Segoe UI", "Helvetica Neue", "Arial", "DejaVu Sans"],
+            "text.color": PORTFOLIO_INK,
+            "axes.titlesize": 12,
+            "axes.titleweight": "semibold",
+            "axes.titlelocation": "left",
+            "axes.titlecolor": PORTFOLIO_INK,
             "axes.labelsize": 10,
+            "axes.labelcolor": "#474b50",
+            "axes.edgecolor": "#bcb7ab",
+            "axes.spines.top": False,
+            "axes.spines.right": False,
+            "axes.grid": False,
+            "grid.color": "#e2ded3",
             "legend.fontsize": 9,
+            "legend.frameon": False,
             "xtick.labelsize": 9,
             "ytick.labelsize": 9,
+            "xtick.color": "#6f7378",
+            "ytick.color": "#6f7378",
             "figure.facecolor": "white",
             "axes.facecolor": "white",
         }
@@ -48,8 +66,8 @@ def validate_colormap(cmap: str) -> None:
 
 
 def add_basemap(ax: Axes, crs: str) -> None:
-    """Add a neutral CartoDB Positron basemap to an axis."""
-    cx.add_basemap(ax, crs=crs, source=cx.providers.CartoDB.Positron, attribution=False)
+    """Add a neutral gray basemap under the data. CARTO tiles now need an API key."""
+    cx.add_basemap(ax, crs=crs, source=cx.providers.Esri.WorldGrayCanvas, attribution=False, zorder=0)
 
 
 def add_north_arrow(ax: Axes, x: float = 0.94, y: float = 0.18) -> None:

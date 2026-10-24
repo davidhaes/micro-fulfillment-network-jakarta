@@ -25,7 +25,7 @@ def make_folium_choropleth(
     vmin = float(web_gdf[value_column].min())
     vmax = float(web_gdf[value_column].max())
 
-    fmap = folium.Map(location=[centroid.y, centroid.x], zoom_start=10, tiles="CartoDB positron")
+    fmap = folium.Map(location=[centroid.y, centroid.x], zoom_start=10, tiles="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}", attr="Tiles &copy; Esri, HERE, Garmin, &copy; OpenStreetMap contributors", max_zoom=16)
 
     def normalize(value: float) -> float:
         if vmax <= vmin:

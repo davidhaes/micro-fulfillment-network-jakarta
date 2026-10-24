@@ -51,7 +51,7 @@ def create_interactive_demand_map(grid: gpd.GeoDataFrame, output_html: Path) -> 
     fmap = folium.Map(
         location=[center.y, center.x],
         zoom_start=10,
-        tiles="CartoDB positron",
+        tiles="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}", attr="Tiles &copy; Esri, HERE, Garmin, &copy; OpenStreetMap contributors", max_zoom=16,
         control_scale=True,
     )
 
@@ -109,7 +109,7 @@ def create_interactive_mfc_map(
     fmap = folium.Map(
         location=[center.y, center.x],
         zoom_start=10,
-        tiles="CartoDB positron",
+        tiles="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}", attr="Tiles &copy; Esri, HERE, Garmin, &copy; OpenStreetMap contributors", max_zoom=16,
         control_scale=True,
     )
 

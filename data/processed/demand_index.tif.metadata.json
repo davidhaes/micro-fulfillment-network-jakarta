@@ -3,7 +3,7 @@
   "source": "Derived from processed demand grid",
   "source_url": "Local pipeline output",
   "license": "Derived open data, see raw metadata for individual licenses",
-  "access_date": "2026-05-30",
+  "access_date": "2026-10-24",
   "spatial_resolution": "1000 m",
   "temporal_coverage": "Composite proxy using latest available open datasets",
   "preprocessing_steps": [

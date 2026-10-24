@@ -32,7 +32,7 @@ def annotate_point(ax, x_value, y_value, label: str) -> None:
         textcoords="offset points",
         fontsize=8,
         bbox={"facecolor": "white", "edgecolor": "none", "alpha": 0.75},
-        arrowprops={"arrowstyle": "->", "color": "#333333", "lw": 0.8},
+        arrowprops={"arrowstyle": "->", "color": "#15171a", "lw": 0.8},
     )
 
 
@@ -47,7 +47,7 @@ def plot_distance_reduction(summary: pd.DataFrame, output_dir: Path) -> None:
         y="distance_reduction_percent",
         marker="o",
         linewidth=2.4,
-        color="#D32F2F",
+        color="#b63a1c",
         ax=ax,
     )
 
@@ -59,13 +59,13 @@ def plot_distance_reduction(summary: pd.DataFrame, output_dir: Path) -> None:
         f"Best tested: {best['distance_reduction_percent']:.1f}%",
     )
 
-    ax.axhline(20, color="#333333", linestyle="--", linewidth=1, alpha=0.8)
+    ax.axhline(20, color="#15171a", linestyle="--", linewidth=1, alpha=0.8)
     ax.text(
         summary["mfc_count"].min(),
         20.8,
         "H1 threshold: 20% distance reduction",
         fontsize=8,
-        color="#333333",
+        color="#15171a",
     )
 
     ax.set_title("Distance Reduction from Distributed Micro-Fulfillment", loc="left", pad=18)
@@ -103,17 +103,17 @@ def plot_service_coverage(summary: pd.DataFrame, output_dir: Path) -> None:
         y="coverage_percent",
         marker="o",
         linewidth=2.4,
-        color="#2CA25F",
+        color="#3f6f73",
         ax=ax,
     )
 
-    ax.axhline(90, color="#D32F2F", linestyle="--", linewidth=1.1)
+    ax.axhline(90, color="#b63a1c", linestyle="--", linewidth=1.1)
     ax.text(
         plot_frame["mfc_count"].min(),
         91,
         "Target: 90% proxy demand covered",
         fontsize=8,
-        color="#D32F2F",
+        color="#b63a1c",
     )
 
     eligible = plot_frame[plot_frame["coverage_percent"] >= 90].sort_values("mfc_count")
@@ -167,13 +167,13 @@ def plot_emission_pathway(emissions: pd.DataFrame, output_dir: Path) -> None:
         palette="viridis",
     )
 
-    ax.axhline(30, color="#333333", linestyle="--", linewidth=1)
+    ax.axhline(30, color="#15171a", linestyle="--", linewidth=1)
     ax.text(
         emissions["mfc_count"].min(),
         30.8,
         "H3 benchmark: 30% CO2e reduction",
         fontsize=8,
-        color="#333333",
+        color="#15171a",
     )
 
     best = emissions.sort_values("emission_reduction_percent", ascending=False).iloc[0]
@@ -219,7 +219,7 @@ def plot_top_underserved(admin_summary: pd.DataFrame, output_dir: Path) -> None:
         data=frame,
         x="mean_underserved_score",
         y="admin_unit",
-        color="#D32F2F",
+        color="#b63a1c",
         ax=ax,
     )
 
@@ -266,7 +266,7 @@ def plot_viirs_trend(trend: pd.DataFrame, output_dir: Path) -> None:
         y="mean_viirs_avg_rad",
         marker="o",
         linewidth=2.4,
-        color="#54278F",
+        color="#15171a",
         ax=ax,
     )
 
@@ -329,13 +329,13 @@ def plot_demand_concentration(clusters_path: Path, output_dir: Path) -> None:
     ax.plot(
         frame["cumulative_area_share"] * 100.0,
         frame["cumulative_demand_share"] * 100.0,
-        color="#D32F2F",
+        color="#b63a1c",
         linewidth=2.4,
     )
-    ax.plot([0, 100], [0, 100], color="#777777", linestyle="--", linewidth=1)
+    ax.plot([0, 100], [0, 100], color="#6f7378", linestyle="--", linewidth=1)
 
-    ax.axhline(70, color="#333333", linestyle=":", linewidth=1)
-    ax.axvline(area_share_percent, color="#333333", linestyle=":", linewidth=1)
+    ax.axhline(70, color="#15171a", linestyle=":", linewidth=1)
+    ax.axvline(area_share_percent, color="#15171a", linestyle=":", linewidth=1)
     ax.text(
         area_share_percent + 1,
         70,
@@ -378,8 +378,8 @@ def plot_validation_correlation(admin_summary: pd.DataFrame, output_dir: Path) -
         data=admin_summary,
         x="total_population_proxy",
         y="total_demand_index",
-        scatter_kws={"s": 55, "alpha": 0.85, "color": "#2C7FB8"},
-        line_kws={"color": "#D32F2F", "linewidth": 2},
+        scatter_kws={"s": 55, "alpha": 0.85, "color": "#3f6f73"},
+        line_kws={"color": "#b63a1c", "linewidth": 2},
         ax=ax,
     )
 

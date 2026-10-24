@@ -2,40 +2,40 @@
 
 ## Answer to Research Questions
 
-1. Jumlah minimum MFC yang mencapai target 90 persen coverage adalah 30 jika skenario tersebut mencapai 90 persen. Coverage skenario referensi adalah 81.6%. Jika nilai ini di bawah 90 persen, maka seluruh skenario yang diuji belum memenuhi target dan 30 adalah konfigurasi coverage terbaik pada rentang p yang diuji.
+1. Jumlah minimum MFC yang mencapai target 90 persen coverage adalah 25 jika skenario tersebut mencapai 90 persen. Coverage skenario referensi adalah 90.6%. Jika nilai ini di bawah 90 persen, maka seluruh skenario yang diuji belum memenuhi target dan 25 adalah konfigurasi coverage terbaik pada rentang p yang diuji.
 
 2. Area underserved prioritas terbesar berada pada unit administratif dengan mean underserved score tertinggi. Lima unit teratas adalah:
-* JakartaUtara: mean underserved score 0.1647, high-high underserved cells 35.
-* Bekasi: mean underserved score 0.1171, high-high underserved cells 322.
-* Bogor: mean underserved score 0.0972, high-high underserved cells 606.
-* JakartaTimur: mean underserved score 0.0889, high-high underserved cells 19.
-* Tangerang: mean underserved score 0.0795, high-high underserved cells 166.
+* Bekasi: mean underserved score 0.1916, high-high underserved cells 545.
+* Tangerang: mean underserved score 0.1795, high-high underserved cells 425.
+* Bogor: mean underserved score 0.1624, high-high underserved cells 755.
+* KotaBekasi: mean underserved score 0.0063, high-high underserved cells 1.
+* JakartaUtara: mean underserved score 0.0029, high-high underserved cells 1.
 
-3. Skenario terbaik yang diuji menurunkan demand-weighted distance sebesar 82.7% dibanding centralized baseline. Baseline distance adalah 4,303,243.5 km per 100.000 proxy deliveries, sedangkan skenario terbaik adalah 744,628.6 km.
+3. Skenario terbaik yang diuji menurunkan demand-weighted distance sebesar 81.6% dibanding centralized baseline. Baseline distance adalah 3,088,235.0 km per 100.000 proxy deliveries, sedangkan skenario terbaik adalah 568,828.0 km.
 
-4. Pengurangan CO2e tertinggi adalah 94.5% pada 30 MFC dan 100 persen EV adoption. Pada skenario referensi dengan 50 persen EV adoption, pengurangan CO2e adalah 88.6%.
+4. Pengurangan CO2e tertinggi adalah 94.2% pada 30 MFC dan 100 persen EV adoption. Pada skenario referensi dengan 50 persen EV adoption, pengurangan CO2e adalah 86.7%.
 
-5. Demand index menunjukkan Moran's I sebesar 0.944 dengan p-value 0.001. Underserved score menunjukkan Moran's I sebesar 0.621 dengan p-value 0.001. Nilai ini menunjukkan apakah hotspot demand dan underserved area membentuk pola spasial yang signifikan, bukan hanya titik ekstrem individual.
+5. Demand index menunjukkan Moran's I sebesar 0.944 dengan p-value 0.001. Underserved score menunjukkan Moran's I sebesar 0.769 dengan p-value 0.001. Nilai ini menunjukkan apakah hotspot demand dan underserved area membentuk pola spasial yang signifikan, bukan hanya titik ekstrem individual.
 
 ## Top 5 Findings
 
-* Optimasi lokasi MFC menghasilkan penurunan jarak maksimum sebesar 82.7% pada rentang skenario yang diuji. Implikasinya, desain jaringan lebih menentukan efisiensi spasial daripada hanya mempercepat rider pada jaringan yang sama.
+* Optimasi lokasi MFC menghasilkan penurunan jarak maksimum sebesar 81.6% pada rentang skenario yang diuji. Implikasinya, desain jaringan lebih menentukan efisiensi spasial daripada hanya mempercepat rider pada jaringan yang sama.
 
-* Skenario referensi 30 MFC memberi coverage 81.6% dalam SLA 30 menit. Jika nilai ini belum mencapai 90 persen, maka operator perlu menaikkan jumlah MFC di atas rentang yang diuji atau menambah strategi hybrid seperti pop-up fulfillment dan rider staging.
+* Skenario referensi 25 MFC memberi coverage 90.6% dalam SLA 30 menit. Jika nilai ini belum mencapai 90 persen, maka operator perlu menaikkan jumlah MFC di atas rentang yang diuji atau menambah strategi hybrid seperti pop-up fulfillment dan rider staging.
 
-* Kombinasi spatial optimization dan EV adoption menghasilkan pengurangan emisi tertinggi sebesar 94.5%. Ini menunjukkan decarbonization tidak cukup hanya mengganti kendaraan, karena jarak fulfillment tetap menentukan beban energi.
+* Kombinasi spatial optimization dan EV adoption menghasilkan pengurangan emisi tertinggi sebesar 94.2%. Ini menunjukkan decarbonization tidak cukup hanya mengganti kendaraan, karena jarak fulfillment tetap menentukan beban energi.
 
 * Sebanyak 70 persen demand proxy terkonsentrasi pada sekitar 48.3% area grid. Status H2: tidak terdukung. Jika area share rendah, strategi MFC perlu fokus pada cluster, bukan penyebaran merata.
 
-* Spatial autocorrelation underserved score menunjukkan Moran's I 0.621. Jika signifikan, rekomendasi lokasi harus berbasis cluster contiguous, bukan daftar cell ranking individual.
+* Spatial autocorrelation underserved score menunjukkan Moran's I 0.769. Jika signifikan, rekomendasi lokasi harus berbasis cluster contiguous, bukan daftar cell ranking individual.
 
 ## Hypothesis Evaluation
 
-* H1, distributed MFC network reduces distance by at least 20 percent: terdukung. Nilai terbaik yang diuji adalah 82.7%.
+* H1, distributed MFC network reduces distance by at least 20 percent: terdukung. Nilai terbaik yang diuji adalah 81.6%.
 
 * H2, at least 70 percent of demand proxy is concentrated within less than 40 percent of grid area: tidak terdukung. Area share untuk 70 persen demand proxy adalah 48.3%.
 
-* H3, optimized MFC plus 50 percent EV adoption reduces CO2e by at least 30 percent: terdukung. Nilai skenario referensi EV 50 persen adalah 88.6%.
+* H3, optimized MFC plus 50 percent EV adoption reduces CO2e by at least 30 percent: terdukung. Nilai skenario referensi EV 50 persen adalah 86.7%.
 
 ## Spatial Pattern Summary
 

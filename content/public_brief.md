@@ -1,4 +1,4 @@
-# Public Brief
+# Public Project Brief
 
 ## Headline
 
@@ -6,11 +6,11 @@ Thirty-minute quick commerce in Greater Jakarta cannot be solved by adding micro
 
 ## Key Results
 
-* 30 optimized MFCs cover 76.3% of proxy demand within the 30-minute threshold.
-* 60 MFCs only raise 30-minute coverage to 76.8%.
-* 30 MFCs reduce demand-weighted distance by 77.0%.
-* 30 MFCs plus 50% EV adoption reduce scenario CO2e by 84.8%.
-* A 60-minute service tier at 25 km/h reaches 98.2% coverage.
+* 30 optimized MFCs cover 90.6% of proxy demand within the 30-minute threshold.
+* Demand-weighted distance falls by 81.6% versus centralized fulfillment.
+* The best tested CO2e scenario reduces emissions by 94.2% per 100,000 proxy deliveries.
+* The largest underserved bottleneck appears in Bekasi.
+* Demand is an open-data proxy, not actual platform order volume.
 
 ## Strategic Takeaway
 

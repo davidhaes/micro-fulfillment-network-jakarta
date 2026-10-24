@@ -276,7 +276,15 @@ def main() -> None:
 
     grid["demand_rank"] = grid["demand_index"].rank(ascending=False, method="dense").astype(int)
     grid["demand_percentile"] = grid["demand_index"].rank(pct=True)
-    grid["proxy_delivery_weight"] = grid["demand_index"].clip(lower=0)
+    # Orders come from people. The composite index is a 0-1 propensity score
+    # (how urban, lit, built and commercial a cell is), so it scales the
+    # population rather than standing in for it. Weighting by the index alone
+    # gave a sparsely settled 1 km cell a third of the weight of a dense urban
+    # one, and handed the large fringe regencies more demand than all of
+    # DKI Jakarta (October 2026 audit).
+    grid["proxy_delivery_weight"] = (
+        grid["population_count"].fillna(0).clip(lower=0) * grid["demand_index"].clip(lower=0)
+    )
     total_weight = grid["proxy_delivery_weight"].sum()
     if total_weight > 0:
         grid["proxy_deliveries_per_100k"] = grid["proxy_delivery_weight"] / total_weight * 100000.0
