@@ -152,3 +152,65 @@ def summarize_network_scenario(distance_matrix: np.ndarray, weights: np.ndarray,
     coverage["selected_candidate_count"] = int(len(selected_indices))
     return pd.DataFrame([coverage])
 
+
+
+def interchange_p_median(
+    distance_matrix: np.ndarray,
+    weights: np.ndarray,
+    selected_indices: list[int],
+    max_passes: int = 3,
+) -> list[int]:
+    """Improve a p-median solution by vertex substitution (Teitz and Bart).
+
+    Each open facility is tried against every closed candidate; a swap is kept
+    when it lowers the demand-weighted distance. Greedy construction alone can
+    lock in early choices that later facilities make redundant.
+    """
+    d = np.asarray(distance_matrix, dtype=np.float32)
+    w = np.asarray(weights, dtype=np.float64)
+    selected = list(selected_indices)
+    if len(selected) < 2:
+        return selected
+
+    for _ in range(max_passes):
+        improved = False
+        for pos in range(len(selected)):
+            sub = d[:, selected]
+            order = np.argsort(sub, axis=1)
+            nearest = sub[np.arange(len(sub)), order[:, 0]]
+            second = sub[np.arange(len(sub)), order[:, 1]]
+            without = np.where(order[:, 0] == pos, second, nearest)
+            base_cost = float((nearest * w).sum())
+            trial = np.minimum(without[:, None], d)
+            costs = (trial * w[:, None]).sum(axis=0)
+            costs[selected] = np.inf
+            best = int(np.argmin(costs))
+            if costs[best] < base_cost - 1e-6:
+                selected[pos] = best
+                improved = True
+        if not improved:
+            break
+    return selected
+
+
+def solve_p_median(distance_matrix: np.ndarray, weights: np.ndarray, p: int) -> list[int]:
+    """Greedy construction followed by vertex substitution."""
+    return interchange_p_median(distance_matrix, weights, greedy_p_median(distance_matrix, weights, p))
+
+
+def greedy_max_coverage(distance_matrix: np.ndarray, weights: np.ndarray, p: int, threshold_meters: float) -> list[int]:
+    """Greedy maximal covering location: each step opens the candidate that
+    covers the most demand not yet covered within the threshold."""
+    covers = np.asarray(distance_matrix) <= threshold_meters
+    w = np.asarray(weights, dtype=np.float64)
+    uncovered = np.ones(covers.shape[0], dtype=bool)
+    selected: list[int] = []
+    for _ in range(min(p, covers.shape[1])):
+        gain = (covers & uncovered[:, None]).T.astype(np.float64) @ w
+        gain[selected] = -1.0
+        best = int(np.argmax(gain))
+        if gain[best] <= 0:
+            break
+        selected.append(best)
+        uncovered &= ~covers[:, best]
+    return selected

@@ -44,6 +44,10 @@ def main() -> None:
 
     grid_points = grid.copy()
     grid_points["geometry"] = grid_points.geometry.centroid
+    # Proxy deliveries outside the 30-minute reach of the reference network.
+    grid_points["uncovered_proxy_deliveries"] = np.where(
+        grid_points["underserved_score"].fillna(0) > 0, grid_points["proxy_deliveries_per_100k"], 0.0
+    )
 
     joined = gpd.sjoin(
         grid_points,
@@ -62,6 +66,7 @@ def main() -> None:
             mean_demand_index=("demand_index", "mean"),
             total_proxy_deliveries_per_100k=("proxy_deliveries_per_100k", "sum"),
             mean_underserved_score=("underserved_score", "mean"),
+            uncovered_proxy_deliveries_per_100k=("uncovered_proxy_deliveries", "sum"),
             high_high_demand_lisa_count=("demand_index_lisa_cluster", lambda s: int((s == "High-High").sum())),
             high_high_underserved_lisa_count=(
             "underserved_score_lisa_cluster", lambda s: int((s == "High-High").sum())),
@@ -70,6 +75,11 @@ def main() -> None:
     )
 
     admin_summary = admin_summary.dropna(subset=["NAME_1", "NAME_2"]).copy()
+    admin_summary["uncovered_demand_share"] = np.where(
+        admin_summary["total_proxy_deliveries_per_100k"] > 0,
+        admin_summary["uncovered_proxy_deliveries_per_100k"] / admin_summary["total_proxy_deliveries_per_100k"],
+        np.nan,
+    )
 
     admin_summary["demand_per_1000_population_proxy"] = np.where(
         admin_summary["total_population_proxy"] > 0,

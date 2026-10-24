@@ -24,15 +24,15 @@ from micro_fulfillment_network_jakarta.logger import get_logger
 from micro_fulfillment_network_jakarta.optimization import (
     compute_coverage,
     compute_euclidean_distance_matrix,
-    greedy_p_median,
+    greedy_max_coverage,
+    solve_p_median,
 )
 from micro_fulfillment_network_jakarta.viz_theme import set_publication_theme
 from micro_fulfillment_network_jakarta.validators import require_file, validate_geodataframe
 
 
 DETOUR_FACTOR = 1.35
-MAX_DEMAND_POINTS = 2500
-MAX_CANDIDATES = 350
+# All demand cells and every built-up candidate, as in 10_optimize_mfc_network.py.
 BASELINE_HUB_LON = 106.8272
 BASELINE_HUB_LAT = -6.1754
 
@@ -53,14 +53,14 @@ def load_candidates(path: Path) -> gpd.GeoDataFrame:
     """Load candidate MFC points."""
     candidates = gpd.read_file(path, layer="mfc_candidates")
     validate_geodataframe(candidates, required_columns=["candidate_id", "demand_index"])
-    candidates = candidates.sort_values("demand_index", ascending=False).head(MAX_CANDIDATES).copy()
+    candidates = candidates.sort_values("demand_index", ascending=False).copy()
     candidates = candidates.reset_index(drop=True)
     return candidates
 
 
 def select_demand_points(grid: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
-    """Select top demand cells for optimization and normalize weights to 100,000 proxy deliveries."""
-    selected = grid.sort_values("demand_index", ascending=False).head(MAX_DEMAND_POINTS).copy()
+    """All demand cells, weights normalised to 100,000 proxy deliveries."""
+    selected = grid.sort_values("demand_index", ascending=False).copy()
     selected = selected.reset_index(drop=True)
 
     non_geometry = selected.drop(columns="geometry").copy()
@@ -112,13 +112,17 @@ def build_extended_scenarios(
     weights: np.ndarray,
     baseline_distance_km: float,
 ) -> tuple[pd.DataFrame, dict[int, list[int]]]:
-    """Build extended MFC count scenarios using greedy p-median."""
+    """Extended MFC count scenarios: p-median for distance, and a greedy
+    maximal-covering solution for the same p, so the coverage a network *could*
+    reach is visible next to the coverage the distance-optimal network reaches."""
     records: list[dict] = []
     selected_by_p: dict[int, list[int]] = {}
 
     for p in tqdm(EXTENDED_MFC_COUNTS, desc="Extended MFC scenarios"):
-        selected_indices = greedy_p_median(route_distance, weights, p=p)
+        selected_indices = solve_p_median(route_distance, weights, p=p)
         selected_by_p[p] = selected_indices
+        mclp = greedy_max_coverage(route_distance, weights, p, reachable_distance_m(20, 30))
+        mclp_coverage = compute_coverage(route_distance, weights, mclp, reachable_distance_m(20, 30))
 
         nearest_distance_m = np.min(route_distance[:, selected_indices], axis=1)
         demand_weighted_distance_km = float(np.sum((nearest_distance_m / 1000.0) * weights))
@@ -141,6 +145,7 @@ def build_extended_scenarios(
                 "service_minutes": 30,
                 "speed_kmh": 20,
                 "coverage_share": float(base_coverage["coverage_share"]),
+                "max_coverage_share": float(mclp_coverage["coverage_share"]),
                 "covered_proxy_deliveries_per_100k": float(base_coverage["covered_weight"]),
                 "mean_nearest_distance_km": float(base_coverage["mean_nearest_distance_m"] / 1000.0),
                 "p90_nearest_distance_km": float(base_coverage["p90_nearest_distance_m"] / 1000.0),
@@ -192,9 +197,15 @@ def build_admin_action_typology(admin_summary: pd.DataFrame) -> pd.DataFrame:
     """Classify administrative units into action-oriented operational typologies."""
     frame = admin_summary.dropna(subset=["NAME_1", "NAME_2"]).copy()
 
+    # Classification on two measured quantities per unit: mean demand index,
+    # and the share of the unit's proxy demand that falls outside the 30-minute
+    # reach of the 30-hub reference network. The earlier rule used the mean
+    # cell underserved score, which large regencies dilute with empty land, so
+    # the regencies holding most of the uncovered demand were labelled
+    # "maintain and monitor".
     high_demand_threshold = 0.75
-    high_underserved_threshold = 0.20
-    critical_underserved_threshold = 0.30
+    uncovered_threshold = 0.20
+    large_unit_deliveries = 10000.0
 
     action_labels = []
     action_priorities = []
@@ -202,43 +213,34 @@ def build_admin_action_typology(admin_summary: pd.DataFrame) -> pd.DataFrame:
 
     for _, row in frame.iterrows():
         demand = float(row["mean_demand_index"])
-        underserved = float(row["mean_underserved_score"])
-        proxy_deliveries = float(row["total_proxy_deliveries_per_100k"])
+        uncovered = float(row.get("uncovered_demand_share", 0.0) or 0.0)
+        uncovered_volume = float(row.get("uncovered_proxy_deliveries_per_100k", 0.0) or 0.0)
 
-        high_demand = demand >= high_demand_threshold
-        high_underserved = underserved >= high_underserved_threshold
-        critical_underserved = underserved >= critical_underserved_threshold
-
-        if high_demand and high_underserved:
-            action_labels.append("New MFC priority")
-            action_priorities.append("High")
-            action_rationales.append(
-                "High demand and high underserved score indicate need for additional local fulfillment capacity."
-            )
-        elif high_demand and not high_underserved:
+        if demand >= high_demand_threshold and uncovered < uncovered_threshold:
             action_labels.append("Densify and electrify")
             action_priorities.append("High")
             action_rationales.append(
-                "High demand with low underserved score fits EV deployment, inventory densification, and operational productivity improvements."
+                "Dense demand already inside the 30-minute reach: electrify the fleet and densify inventory."
             )
-        elif not high_demand and critical_underserved and proxy_deliveries >= 10000:
-            action_labels.append("Fringe MFC or staging priority")
+        elif demand >= high_demand_threshold:
+            action_labels.append("Add hubs in the core")
+            action_priorities.append("High")
+            action_rationales.append("Dense demand with a material share outside the 30-minute reach.")
+        elif uncovered >= uncovered_threshold and uncovered_volume >= 0.1 * large_unit_deliveries:
+            action_labels.append("Fringe hubs or staging points")
             action_priorities.append("High")
             action_rationales.append(
-                "Large proxy demand and critical underserved score indicate a fringe coverage bottleneck requiring MFC expansion or staging points."
+                "A large volume of demand outside the 30-minute reach: add fringe hubs or rider staging points, "
+                "or offer a longer service tier."
             )
-        elif not high_demand and high_underserved:
-            action_labels.append("Staging or tiered SLA")
+        elif uncovered >= uncovered_threshold:
+            action_labels.append("Tiered service level")
             action_priorities.append("Medium")
-            action_rationales.append(
-                "Moderate demand with high underserved score suggests rider staging, partner pickup, or 45–60 minute service tier."
-            )
+            action_rationales.append("Low-volume demand outside the 30-minute reach: a 45 to 60 minute tier.")
         else:
             action_labels.append("Maintain and monitor")
             action_priorities.append("Low")
-            action_rationales.append(
-                "Lower underserved score does not justify immediate MFC expansion."
-            )
+            action_rationales.append("Most demand is already inside the 30-minute reach.")
 
     frame["action_typology"] = action_labels
     frame["action_priority"] = action_priorities
@@ -248,7 +250,7 @@ def build_admin_action_typology(admin_summary: pd.DataFrame) -> pd.DataFrame:
     frame["priority_rank"] = frame["action_priority"].map(priority_order)
 
     frame = frame.sort_values(
-        ["priority_rank", "mean_underserved_score", "total_proxy_deliveries_per_100k"],
+        ["priority_rank", "uncovered_proxy_deliveries_per_100k", "total_proxy_deliveries_per_100k"],
         ascending=[True, False, False],
     ).drop(columns=["priority_rank"]).reset_index(drop=True)
 
@@ -272,8 +274,18 @@ def plot_extended_coverage_curve(frame: pd.DataFrame, output_path: Path) -> None
         color="#2E7D32",
         marker="o",
         linewidth=2.4,
-        label="30-minute coverage",
+        label="30-minute coverage, distance-optimal network",
     )
+    if "max_coverage_share" in plot_frame:
+        ax1.plot(
+            plot_frame["mfc_count"],
+            plot_frame["max_coverage_share"] * 100.0,
+            color="#81C784",
+            marker="o",
+            linestyle="--",
+            linewidth=1.8,
+            label="30-minute coverage, coverage-optimal network",
+        )
     ax2.plot(
         plot_frame["mfc_count"],
         plot_frame["distance_reduction_percent"],
@@ -380,20 +392,21 @@ def plot_admin_typology(frame: pd.DataFrame, output_path: Path) -> None:
 
     plot_frame = frame.copy()
     plot_frame["admin_unit"] = plot_frame["NAME_2"].astype(str)
-    plot_frame = plot_frame.sort_values("mean_underserved_score", ascending=False).head(13)
+    plot_frame["uncovered_percent"] = plot_frame["uncovered_demand_share"] * 100.0
+    plot_frame = plot_frame.sort_values("uncovered_proxy_deliveries_per_100k", ascending=False).head(13)
 
     palette = {
-        "New MFC priority": "#B2182B",
-        "Fringe MFC or staging priority": "#D6604D",
+        "Add hubs in the core": "#B2182B",
+        "Fringe hubs or staging points": "#D6604D",
         "Densify and electrify": "#1B9E77",
-        "Staging or tiered SLA": "#E6AB02",
+        "Tiered service level": "#E6AB02",
         "Maintain and monitor": "#9E9E9E",
     }
 
     fig, ax = plt.subplots(figsize=(11, 6.3))
     sns.barplot(
         data=plot_frame,
-        x="mean_underserved_score",
+        x="uncovered_percent",
         y="admin_unit",
         hue="action_typology",
         dodge=False,
@@ -405,13 +418,13 @@ def plot_admin_typology(frame: pd.DataFrame, output_path: Path) -> None:
     ax.text(
         0,
         1.01,
-        "Priority classes derived from demand intensity and underserved score",
+        "Share of each unit's proxy demand outside 30 minutes of the 30-hub network",
         transform=ax.transAxes,
         ha="left",
         fontsize=10.5,
     )
 
-    ax.set_xlabel("Mean underserved score")
+    ax.set_xlabel("Proxy demand outside 30-minute reach, percent")
     ax.set_ylabel("")
     ax.grid(True, axis="x", alpha=0.3)
     ax.legend(title="Recommended action", loc="lower right", frameon=True)
@@ -441,7 +454,8 @@ def build_enhanced_payload(
             "NAME_1",
             "NAME_2",
             "mean_demand_index",
-            "mean_underserved_score",
+            "uncovered_demand_share",
+            "uncovered_proxy_deliveries_per_100k",
             "total_proxy_deliveries_per_100k",
             "action_typology",
             "action_priority",

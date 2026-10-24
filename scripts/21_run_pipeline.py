@@ -119,7 +119,7 @@ def main() -> None:
     if failed:
         logger.error(f"Pipeline completed with failures: {failed}")
         print("Pipeline completed with failures:")
-        for item in failed:`
+        for item in failed:
             print(f"* {item}")
         sys.exit(1)
 

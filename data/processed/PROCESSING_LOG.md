@@ -1,7 +1,7 @@
 # Processing Log
 
 
-Total data folder size: 0.4060 GB.
+Total data folder size: 0.4065 GB.
 
 Processed outputs created by the pipeline:
 
@@ -20,14 +20,14 @@ Processed outputs created by the pipeline:
 Reference scenario:
 
 * MFC count: 30.
-* Coverage share: 0.7633.
-* Distance reduction percent: 76.9645.
+* Coverage share: 0.8163.
+* Distance reduction percent: 82.6961.
 
 Best emission scenario:
 
 * MFC count: 30.
 * EV adoption percent: 100.
-* Emission reduction percent: 92.7214.
+* Emission reduction percent: 94.5325.
 
 Interpretation boundary:
 

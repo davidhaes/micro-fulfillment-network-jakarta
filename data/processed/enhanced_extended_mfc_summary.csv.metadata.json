@@ -3,7 +3,7 @@
   "source": "Derived from demand grid and MFC candidates",
   "source_url": "Local pipeline output",
   "license": "Derived open data",
-  "access_date": "2026-06-01",
+  "access_date": "2026-09-27",
   "spatial_resolution": "1000 m demand grid",
   "temporal_coverage": "Scenario analysis",
   "preprocessing_steps": [

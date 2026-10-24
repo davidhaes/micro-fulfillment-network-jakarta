@@ -1,24 +1,33 @@
 # Micro-Fulfillment Network Optimization for Quick-Commerce Decarbonization in Greater Jakarta
 
-Open-data geospatial optimization framework for evaluating micro-fulfillment center network design, 30-minute service coverage, underserved spatial clusters, and last-mile CO2e reduction scenarios for quick-commerce operations in Greater Jakarta.
+Open-data geospatial optimization framework for evaluating micro-fulfillment center (MFC) network design, 30-minute service coverage, underserved spatial clusters, and last-mile CO2e reduction scenarios for quick-commerce operations in Greater Jakarta.
 
-This project combines Google Earth Engine, WorldPop, VIIRS nighttime lights, Dynamic World, OpenStreetMap, p-median facility location, Moran’s I, LISA hotspot analysis, and CO2e scenario modeling in a fully reproducible Python pipeline.
+The pipeline combines Google Earth Engine, WorldPop, VIIRS nighttime lights, Dynamic World, OpenStreetMap, p-median and maximal-covering facility location, Moran's I, LISA hotspot analysis, and CO2e scenario modeling in a reproducible Python pipeline.
 
 ## Executive Takeaway
 
-Thirty-minute quick commerce in Greater Jakarta cannot be solved by adding micro-fulfillment centers alone.
+Thirty-minute quick commerce across Greater Jakarta is a question of how many hubs, not a hard limit.
 
-The optimized network substantially reduces last-mile distance and emissions, but a uniform 30-minute service promise across the full metropolitan region hits a structural coverage ceiling. Dense urban cores are better suited for operational densification and fleet electrification, while fringe regencies require selective MFC expansion, rider staging points, and 45–60 minute service tiers.
+With every demand cell counted and every built-up cell allowed as a candidate site, coverage keeps rising as hubs are added: 30 hubs reach 81.6 percent of proxy demand within 30 minutes and 40 hubs pass 90 percent. The last tenth of demand sits in the Bogor, Bekasi and Tangerang regencies, where a longer service tier or rider staging points are cheaper than the extra hubs full coverage needs. Distance reduction does most of the decarbonisation work; electrifying the fleet on top of it adds the rest.
 
 ## Key Results
 
-* 30 optimized MFCs cover 76.3% of proxy demand within the modeled 30-minute threshold.
-* Extending the network from 30 to 60 MFCs only increases 30-minute coverage from 76.3% to 76.8%.
-* 30 MFCs reduce demand-weighted last-mile distance by 77.0% versus a centralized fulfillment baseline.
-* 30 MFCs plus 50% electric motorcycle adoption reduce scenario CO2e by 84.8% per 100,000 proxy deliveries.
-* A 60-minute service tier at 25 km/h reaches 98.2% coverage.
-* Demand and underserved gaps are highly spatially clustered, with Moran’s I of 0.944 and 0.870.
-* The largest underserved bottlenecks are located in Tangerang, Bekasi, and Bogor regencies.
+* 30 optimized MFCs cover 81.6% of proxy demand within 30 minutes at 20 km/h.
+* 40 MFCs reach 91.9% and 60 MFCs 98.0%. A network optimized for coverage rather than distance reaches almost the same values (82.5% at 30 hubs), so the distance-optimal network gives up little coverage.
+* 30 MFCs reduce demand-weighted last-mile distance by 82.7% against a single central fulfillment hub.
+* 30 MFCs plus 50% electric motorcycle adoption reduce scenario CO2e by 88.6% per 100,000 proxy deliveries; with 100% EV adoption, 94.5%.
+* With 30 MFCs, a 45-minute tier at 20 km/h reaches 98.4% coverage.
+* Demand is strongly clustered (Moran's I = 0.944); demand left outside the 30-minute reach is also clustered (Moran's I = 0.621), both p = 0.001.
+* The largest volumes of uncovered demand are in the Bogor regency (30% of its demand), the Bekasi regency (27%) and North Jakarta (22%).
+
+## Correction, September 2026
+
+An earlier version of this README reported 76.3% coverage with 30 hubs, a "coverage ceiling" of 76.8% at 60 hubs, and concluded that adding MFCs cannot solve 30-minute coverage. That conclusion was an artifact of the setup, not a property of Greater Jakarta:
+
+* only the 2,500 highest-demand cells (57% of proxy demand) entered the optimization, and coverage was reported as a share of that subset;
+* candidate sites were limited to 350 points in the top 30% of demand, and 76.8% was exactly the coverage reached with all 350 open.
+
+The optimization now uses all 7,096 demand cells, all 3,792 built-up cells as candidates, greedy construction improved by vertex substitution, and a maximal-covering comparison. The previous outputs are archived outside the repository.
 
 ## Study Area
 
@@ -26,29 +35,19 @@ The study area is the road-based Greater Jakarta metropolitan logistics region g
 
 ## Important Interpretation Boundary
 
-Demand in this project is a latent open-data proxy, not actual platform order volume.
+Demand in this project is a latent open-data proxy, not actual platform order volume. The demand proxy is derived from WorldPop population, VIIRS nighttime lights, Dynamic World built-up probability, OpenStreetMap road accessibility and OpenStreetMap commercial POI density.
 
-The demand proxy is derived from:
-
-* WorldPop population.
-* VIIRS nighttime lights.
-* Dynamic World built-up probability.
-* OpenStreetMap road accessibility.
-* OpenStreetMap commercial POI density.
-
-Emissions are scenario-based per 100,000 proxy deliveries, not measured company emissions. Distance is modeled using corrected Euclidean distance, not live time-dependent routing.
+Emissions are scenario-based per 100,000 proxy deliveries, not measured company emissions. The grid emission factor is an assumption (650 gCO2e/kWh); at 870 gCO2e/kWh, closer to published Java-Bali grid values, the 30-hub, 50%-EV reduction falls from 88.6% to about 87.7%. Distance is corrected Euclidean distance (detour factor 1.35), not live time-dependent routing.
 
 ## Method Overview
 
-The pipeline follows seven main steps:
-
-1. Generate Greater Jakarta AOI from GADM 4.1.
+1. Generate the Greater Jakarta AOI from GADM 4.1.
 2. Preprocess raster data in Google Earth Engine.
 3. Build a 1 km open-data quick-commerce demand proxy.
-4. Generate candidate MFC locations from high-demand cells and OSM commercial POIs.
-5. Optimize MFC networks using demand-weighted p-median logic.
-6. Evaluate 30-minute service coverage, CO2e scenarios, and spatial clustering.
-7. Run enhanced sensitivity analysis for MFC count, speed, and service-tier assumptions.
+4. Take every built-up cell (Dynamic World built-up probability at least 0.20) as a candidate MFC site.
+5. Optimize MFC networks with a demand-weighted p-median (greedy construction plus vertex substitution) over all demand cells, and compare with a greedy maximal-covering solution.
+6. Evaluate 30-minute service coverage, CO2e scenarios, and spatial clustering of uncovered demand.
+7. Run sensitivity analysis for MFC count, speed, and service tier.
 
 ## Visual Evidence and Interpretation
 
@@ -56,108 +55,59 @@ The pipeline follows seven main steps:
 
 ![Optimized MFC Network](docs/assets/01_optimized_mfc_network.png)
 
-The optimized 30-MFC network reduces demand-weighted distance by 77.0% compared with a centralized baseline. However, distance reduction does not automatically translate into full 30-minute coverage. The red points indicate selected micro-fulfillment centers, while the background shows demand suitability.
-
-Main interpretation:
-
-* MFC placement strongly improves last-mile efficiency.
-* The dense urban core is relatively serviceable.
-* Remaining coverage gaps are concentrated in fringe metropolitan areas.
+The 30-hub network cuts demand-weighted distance by 82.7% against a central hub.
 
 ### 2. Thirty-Minute Service Coverage
 
 ![Thirty-Minute Service Coverage](docs/assets/02_thirty_minute_service_coverage.png)
 
-The 30-MFC scenario covers 76.3% of proxy demand within the modeled 30-minute threshold. This means nearly one-quarter of proxy demand remains outside the 30-minute service area under the default 20 km/h and detour factor assumptions.
-
-Main interpretation:
-
-* A uniform 30-minute promise is difficult across the full Greater Jakarta region.
-* Coverage gaps are not random.
-* Fringe areas require a different operating model from dense urban cores.
+81.6% of proxy demand sits within 30 minutes of the 30-hub network at 20 km/h. The uncovered remainder is on the fringes.
 
 ### 3. Underserved Demand Hotspots
 
 ![Underserved Hotspot LISA](docs/assets/03_underserved_hotspot_lisa.png)
 
-LISA hotspot analysis identifies spatially clustered underserved areas. The strongest underserved bottlenecks appear in Tangerang, Bekasi, and Bogor regencies.
+Uncovered demand clusters spatially (Moran's I = 0.621, p = 0.001), mostly in the Bogor, Bekasi and Tangerang regencies.
 
-Main interpretation:
-
-* Underserved demand forms spatial clusters.
-* Moran’s I for underserved score is 0.870 with p = 0.001.
-* Expansion should target contiguous hotspot clusters, not isolated cells.
-
-### 4. Extended MFC Count Sensitivity
+### 4. MFC Count Sensitivity
 
 ![Extended MFC Coverage Curve](docs/assets/04_extended_mfc_coverage_curve.png)
 
-The extended analysis tests MFC counts from 5 to 60. Increasing the network from 30 to 60 MFCs only raises 30-minute coverage from 76.3% to 76.8%.
-
-Main interpretation:
-
-* The system reaches a 30-minute coverage ceiling.
-* Adding more MFCs alone is not enough.
-* Network strategy must include staging, routing improvement, and service-tier segmentation.
+Coverage rises from 19.5% with 5 hubs to 81.6% with 30, 91.9% with 40 and 98.0% with 60. There is no plateau in this range.
 
 ### 5. Speed and Service-Tier Sensitivity
 
 ![Speed Service Sensitivity](docs/assets/05_speed_service_sensitivity_heatmap.png)
 
-Coverage improves substantially when the service tier is relaxed from 30 to 45 or 60 minutes. The best sensitivity scenario reaches 98.2% coverage at 25 km/h and a 60-minute service tier.
-
-Main interpretation:
-
-* Service-tier design has more leverage than simply increasing MFC count.
-* A metropolitan-wide 30-minute promise is operationally aggressive.
-* A realistic strategy is 30 minutes for core urban zones and 45–60 minutes for fringe regencies.
+A 45-minute tier lifts the 30-hub network from 81.6% to 98.4% coverage at 20 km/h, which is the cheaper route to near-full coverage than doubling the network.
 
 ### 6. CO2e Reduction Pathway
 
 ![Emission Scenario Pathway](docs/assets/06_emission_scenario_pathway.png)
 
-The 30-MFC network plus 50% EV adoption reduces scenario CO2e by 84.8% per 100,000 proxy deliveries. With 100% EV adoption, the reduction reaches 92.7%.
-
-Main interpretation:
-
-* Electrification is most effective after fulfillment distance is reduced.
-* Decarbonization is a network design problem, not only a vehicle technology problem.
-* Partial EV adoption already delivers a large reduction when paired with optimized MFC placement.
+Shorter distance delivers most of the reduction; electrification compounds it.
 
 ### 7. Administrative Action Typology
 
 ![Administrative Action Typology](docs/assets/07_admin_action_typology.png)
 
-Administrative units are classified by demand intensity and underserved score.
-
-Main interpretation:
-
-* Dense urban cores are candidates for densification and electrification.
-* Tangerang and Bekasi require fringe MFCs or staging strategies.
-* Bogor requires careful service-tier planning because its geography is broad and less compact.
+Units are classed by demand intensity and by the share of their demand outside the 30-minute reach of the 30-hub network.
 
 ## Strategic Recommendations
 
-### Core Urban Areas
+### Core urban areas
 
-Recommended strategy:
+Most demand in Jakarta, Kota Tangerang, Tangerang Selatan, Depok, Kota Bekasi and Kota Bogor is already inside the 30-minute reach. Densify inventory, electrify the fleet and improve charging access. North Jakarta is the exception, with 22% of its demand outside the reach, and warrants additional core hubs.
 
-* Densify operations.
-* Deploy electric motorcycles.
-* Improve charging access.
-* Optimize inventory allocation.
-* Maintain 30-minute service where operationally feasible.
+### Fringe regencies
 
-Relevant areas include Jakarta, Kota Tangerang, Tangerang Selatan, Depok, Kota Bekasi, and Kota Bogor.
+The Bogor and Bekasi regencies hold the largest uncovered volumes. Add hubs inside contiguous uncovered clusters, use rider staging points, and offer a 45-minute tier where hubs are not justified.
 
-### Fringe Regencies
+## Reproducing
 
-Recommended strategy:
+```bash
+python scripts/21_run_pipeline.py --skip-gee-auth
+python scripts/run_enhanced_analysis.py
+```
 
-* Add selective MFCs only in underserved hotspot clusters.
-* Deploy rider staging points.
-* Use partner pickup nodes.
-* Apply 45–60 minute service tiers.
-* Avoid uniform 30-minute promises.
-
-Priority areas include Tangerang, Bekasi, and Bogor regencies.
+Steps 01 to 08 need Earth Engine credentials; from step 09 onward the pipeline runs on data already on disk.

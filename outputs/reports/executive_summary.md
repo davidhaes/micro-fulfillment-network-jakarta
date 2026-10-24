@@ -1,19 +1,27 @@
 # Executive Summary
 
-This project evaluates whether an optimized micro-fulfillment center network can reduce last-mile delivery distance and CO2e emissions while supporting quick-commerce service coverage in Greater Jakarta. Demand is modeled as a latent open-data proxy using WorldPop population, VIIRS nighttime lights, Dynamic World built-up probability, OpenStreetMap accessibility, and commercial POI density. It is not actual platform order volume.
+Greater Jakarta adalah pasar metropolitan yang menuntut pengiriman cepat, tetapi quick commerce menghadapi trade-off antara SLA 30 menit, biaya last-mile, dan emisi operasional. Project ini membangun framework open-data untuk menguji apakah desain jaringan micro-fulfillment center dapat mengurangi jarak tempuh dan CO2e tanpa mengklaim order aktual platform. Demand yang dianalisis adalah latent quick-commerce demand proxy dari populasi, nighttime lights, built-up intensity, road accessibility, dan commercial POI density.
 
-The workflow combines GADM-based AOI generation, Google Earth Engine raster preprocessing, a 1 km demand grid, candidate MFC screening, demand-weighted p-median optimization, 30-minute service coverage modeling, Moran’s I, LISA hotspot analysis, clustering, and CO2e scenario modeling.
+Metode utama mencakup pembuatan AOI dari GADM 4.1, preprocessing raster melalui Google Earth Engine, pembangunan grid demand 1 km, candidate MFC screening dari OSM POI dan high-demand cells, p-median optimization, 30-minute service coverage, spatial autocorrelation, dan emission scenario analysis. Emisi dihitung per 100.000 proxy deliveries agar hasil dapat dibandingkan tanpa membutuhkan data transaksi proprietary.
 
-Key findings:
+Temuan kunci:
 
-* 30 optimized MFCs cover 76.3% of proxy demand within the modeled 30-minute threshold.
-* Increasing the test range from 30 to 60 MFCs only raises 30-minute coverage to 76.8%, indicating a structural coverage ceiling under the default 20 km/h and 30-minute assumptions.
-* 30 MFCs reduce demand-weighted distance by 77.0% compared with a centralized fulfillment baseline.
-* 30 MFCs plus 50% electric motorcycle adoption reduce scenario CO2e by 84.8% per 100,000 proxy deliveries.
-* The strongest sensitivity scenario reaches 98.2% coverage at 25 km/h and a 60-minute service tier.
-* Demand and underserved gaps are strongly spatially clustered, with Moran’s I of 0.944 and 0.870.
-* The largest underserved bottlenecks are located in Tangerang, Bekasi, and Bogor regencies.
+* Skenario referensi memilih 30 MFC dengan coverage 81.6% terhadap proxy demand dalam SLA 30 menit.
 
-Strategic conclusion: quick-commerce decarbonization in Greater Jakarta is not only an EV adoption problem or an MFC-count problem. It is a spatial service-design problem. Dense urban cores should be operationally densified and electrified, while fringe regencies require selective MFC expansion, rider staging points, and 45–60 minute service tiers.
+* Skenario terbaik menurunkan demand-weighted distance sebesar 82.7% dibanding centralized baseline.
 
-The full pipeline is reproducible through Python scripts after Google Earth Engine credentials are configured.
+* Pengurangan CO2e tertinggi mencapai 94.5% pada 30 MFC dan 100 persen EV adoption.
+
+* Sebanyak 70 persen demand proxy terkonsentrasi pada sekitar 48.3% area grid, sehingga expansion planning harus berbasis cluster, bukan pemerataan fasilitas.
+
+* Underserved score memiliki Moran's I 0.621 dengan p-value 0.001, yang menunjukkan apakah gap service membentuk cluster spasial signifikan.
+
+Rekomendasi prioritas tinggi:
+
+* Prioritaskan MFC pada underserved High-High LISA clusters untuk menaikkan coverage dan menurunkan p90 nearest-MFC distance.
+
+* Paketkan MFC optimization dengan EV adoption karena electrification paling efektif ketika jarak fulfillment sudah dipersingkat.
+
+* Jalankan sensitivity review sebelum capex real estate dengan skenario speed 15 km/h, bobot demand alternatif, dan grid 1500 m.
+
+Reproducibility: seluruh pipeline dapat dijalankan dari repository dengan satu perintah setelah environment dan credential Google Earth Engine disiapkan.

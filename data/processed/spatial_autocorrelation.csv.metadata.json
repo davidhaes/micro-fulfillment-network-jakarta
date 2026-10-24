@@ -3,7 +3,7 @@
   "source": "Derived from service coverage grid",
   "source_url": "Local pipeline output",
   "license": "Derived open data",
-  "access_date": "2026-05-30",
+  "access_date": "2026-09-27",
   "spatial_resolution": "1000 m grid",
   "temporal_coverage": "Scenario-based spatial statistics",
   "preprocessing_steps": [

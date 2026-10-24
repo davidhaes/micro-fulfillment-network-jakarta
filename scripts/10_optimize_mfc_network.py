@@ -21,14 +21,18 @@ from micro_fulfillment_network_jakarta.logger import get_logger
 from micro_fulfillment_network_jakarta.optimization import (
     compute_coverage,
     compute_euclidean_distance_matrix,
-    greedy_p_median,
+    solve_p_median,
 )
 from micro_fulfillment_network_jakarta.validators import require_file, validate_geodataframe
 
 
 DETOUR_FACTOR = 1.35
-MAX_DEMAND_POINTS = 2500
-MAX_CANDIDATES = 350
+# Every demand cell enters the optimisation and the coverage denominator. An
+# earlier version kept only the 2,500 highest-demand cells (57 percent of
+# proxy demand) and 350 candidates drawn from the top 30 percent of demand,
+# so reported coverage described the dense core only and the "coverage
+# ceiling" at 30 to 60 hubs was the ceiling of the candidate set itself.
+MIN_CANDIDATE_BUILT_PROBABILITY = 0.20
 BASELINE_HUB_LON = 106.8272
 BASELINE_HUB_LAT = -6.1754
 
@@ -64,77 +68,33 @@ def drop_extra_geometry_columns(gdf: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
 
 
 def build_candidate_points(grid: gpd.GeoDataFrame, pois_path: Path) -> gpd.GeoDataFrame:
-    """Build candidate MFC points from high-demand cells and commercial POIs."""
-    logger = get_logger("10_optimize_mfc_network")
-    pois = gpd.read_file(pois_path).to_crs(grid.crs)
-    validate_geodataframe(pois)
+    """Candidate MFC sites: the centroid of every built-up cell.
 
-    high_demand = grid[
-        (grid["demand_percentile"] >= 0.70)
-        & (grid["built_probability"].fillna(0) >= 0.05)
-    ].copy()
-
-    if high_demand.empty:
-        logger.info("No high-demand cells passed the candidate threshold. Falling back to top demand cells.")
-        high_demand = grid.sort_values("demand_index", ascending=False).head(MAX_CANDIDATES).copy()
-
-    poi_points = pois.copy()
-    poi_points["geometry"] = poi_points.geometry.representative_point()
-
-    joined = gpd.sjoin(
-        poi_points[["geometry"]],
-        high_demand[["cell_id", "demand_index", "geometry"]],
-        how="inner",
-        predicate="within",
-    )
-
-    if joined.empty:
-        logger.info("No POI-based candidates found inside high-demand cells. Falling back to high-demand cell centroids.")
-        fallback = high_demand.sort_values("demand_index", ascending=False).head(MAX_CANDIDATES).copy()
-        non_geometry = fallback.drop(columns="geometry").copy()
-        candidates = gpd.GeoDataFrame(
-            non_geometry,
-            geometry=fallback.geometry.centroid,
-            crs=grid.crs,
-        )
-        candidates["candidate_source"] = "high_demand_cell_centroid"
-    else:
-        candidates = joined.merge(
-            high_demand.drop(columns="geometry"),
-            on="cell_id",
-            how="left",
-            suffixes=("", "_cell"),
-        )
-        candidates = gpd.GeoDataFrame(candidates, geometry="geometry", crs=grid.crs)
-        candidates["candidate_source"] = "osm_commercial_poi_in_high_demand_cell"
-
-    candidates = candidates.sort_values("demand_index", ascending=False).drop_duplicates(subset=["cell_id"])
-    candidates = candidates.head(MAX_CANDIDATES).copy().reset_index(drop=True)
-    candidates["candidate_id"] = [f"mfc_candidate_{i + 1:04d}" for i in range(len(candidates))]
+    A cell qualifies when Dynamic World built-up probability is at least
+    0.20, which keeps settlements and commercial land and drops paddy, forest
+    and water. OSM commercial POI counts are carried as an attribute; they are
+    not used to exclude candidates, because OSM coverage is thinnest exactly
+    in the fringe regencies whose coverage the study is asking about.
+    """
+    built = grid[grid["built_probability"].fillna(0) >= MIN_CANDIDATE_BUILT_PROBABILITY].copy()
+    non_geometry = built.drop(columns="geometry").copy()
+    candidates = gpd.GeoDataFrame(non_geometry, geometry=built.geometry.centroid, crs=grid.crs)
+    candidates["candidate_source"] = "built_up_cell_centroid"
+    candidates = candidates.sort_values("demand_index", ascending=False).reset_index(drop=True)
+    candidates["candidate_id"] = [f"mfc_candidate_{i + 1:05d}" for i in range(len(candidates))]
     candidates["candidate_rank"] = np.arange(1, len(candidates) + 1)
-
     keep_columns = [
-        "candidate_id",
-        "candidate_rank",
-        "candidate_source",
-        "cell_id",
-        "demand_index",
-        "population_count",
-        "nighttime_lights",
-        "built_probability",
-        "road_length_m_intersecting",
-        "commercial_poi_count",
-        "geometry",
+        "candidate_id", "candidate_rank", "candidate_source", "cell_id", "demand_index",
+        "population_count", "nighttime_lights", "built_probability",
+        "road_length_m_intersecting", "commercial_poi_count", "geometry",
     ]
-    keep_columns = [column for column in keep_columns if column in candidates.columns]
-    candidates = candidates[keep_columns].copy()
-    candidates = drop_extra_geometry_columns(candidates)
-    return candidates
+    candidates = candidates[[c for c in keep_columns if c in candidates.columns]].copy()
+    return drop_extra_geometry_columns(candidates)
 
 
 def select_demand_points(grid: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
-    """Select demand point centroids for optimization while preserving normalized demand weights."""
-    selected = grid.sort_values("demand_index", ascending=False).head(MAX_DEMAND_POINTS).copy()
+    """All demand cells as centroids, weights normalised to 100,000 proxy deliveries."""
+    selected = grid.sort_values("demand_index", ascending=False).copy()
     selected = selected.reset_index(drop=True)
 
     geometry = selected.geometry.centroid
@@ -225,8 +185,8 @@ def main() -> None:
     coverage_grid = grid.copy()
 
     for p in settings.mfc_counts:
-        logger.info(f"Running greedy p-median optimization for p={p}.")
-        selected_indices = greedy_p_median(route_distance, weights, p=p)
+        logger.info(f"Running p-median (greedy plus vertex substitution) for p={p}.")
+        selected_indices = solve_p_median(route_distance, weights, p=p)
 
         coverage = compute_coverage(
             distance_matrix=route_distance,
@@ -321,11 +281,8 @@ def main() -> None:
         spatial_resolution=f"{settings.analysis_grid_size_meters} m demand grid with candidate points",
         temporal_coverage="Composite proxy using latest available open datasets",
         preprocessing_steps=[
-            "Selected high-demand grid cells above 70th percentile",
-            "Filtered cells with built probability at least 0.05",
-            "Selected commercial OSM POIs inside high-demand cells",
-            "Fell back to high-demand cell centroids if POI candidates were unavailable",
-            f"Limited candidates to top {MAX_CANDIDATES} for computational stability",
+            f"Every grid cell with Dynamic World built-up probability at least {MIN_CANDIDATE_BUILT_PROBABILITY}",
+            "Candidate point at the cell centroid; OSM commercial POI count kept as an attribute",
         ],
         unit="Candidate point",
         citation_apa="Derived candidate MFC locations from open geospatial data.",
@@ -342,11 +299,11 @@ def main() -> None:
         spatial_resolution="Point facilities selected from candidate set",
         temporal_coverage="Scenario-based facility location analysis",
         preprocessing_steps=[
-            "Selected demand-weighted p-median locations using vectorized greedy deterministic heuristic",
+            "Demand-weighted p-median: greedy construction improved by vertex substitution (Teitz and Bart 1968)",
             "Applied corrected Euclidean distance with detour factor 1.35",
             "Evaluated MFC count scenarios from project configuration",
             "Computed 30-minute coverage using default speed assumption",
-            "Normalized selected demand subset to 100,000 proxy deliveries for comparable scenario accounting",
+            "All demand cells enter the objective and the coverage denominator (100,000 proxy deliveries)",
         ],
         unit="Selected facility point by scenario",
         citation_apa="Hakimi, S. L. (1964). Optimum locations of switching centers and the absolute centers and medians of a graph. Operations Research.",
@@ -355,8 +312,8 @@ def main() -> None:
         extra={
             "detour_factor": DETOUR_FACTOR,
             "baseline_hub": {"longitude": BASELINE_HUB_LON, "latitude": BASELINE_HUB_LAT},
-            "max_demand_points": MAX_DEMAND_POINTS,
-            "max_candidates": MAX_CANDIDATES,
+            "demand_points": "all cells with positive demand",
+            "min_candidate_built_probability": MIN_CANDIDATE_BUILT_PROBABILITY,
         },
     )
 

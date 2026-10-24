@@ -14,20 +14,20 @@ The project builds a reproducible Python pipeline using Google Earth Engine, Wor
 
 ## Key Results
 
-* 30 optimized MFCs cover 76.3% of proxy demand within the 30-minute threshold.
-* 60 MFCs only raise 30-minute coverage to 76.8%.
-* 30 MFCs reduce demand-weighted distance by 77.0%.
-* 30 MFCs plus 50% EV adoption reduce scenario CO2e by 84.8%.
-* 30 MFCs, 25 km/h, and a 60-minute service tier reach 98.2% coverage.
-* Demand and underserved gaps are highly clustered, with Moran’s I of 0.944 and 0.870.
+* 30 optimized MFCs cover 81.6% of proxy demand within 30 minutes at 20 km/h.
+* 40 MFCs reach 91.9% and 60 MFCs 98.0%; coverage keeps rising with hub count.
+* 30 MFCs reduce demand-weighted distance by 82.7%.
+* 30 MFCs plus 50% EV adoption reduce scenario CO2e by 88.6%.
+* With 30 MFCs, a 45-minute tier at 20 km/h reaches 98.4% coverage.
+* Demand and uncovered demand are clustered, with Moran's I of 0.944 and 0.621.
 
 ## Strategic Insight
 
-Quick-commerce decarbonization is not simply an EV problem or an MFC-count problem. It is a spatial service-design problem. Dense urban cores should be densified and electrified, while fringe regencies require selective MFCs, staging points, and 45–60 minute service tiers.
+Near-full 30-minute coverage is reachable with about 40 hubs. The last tenth of demand sits in the Bogor, Bekasi and Tangerang regencies, where a 45-minute tier or rider staging points cost less than the hubs full coverage would need. Dense cores should be densified and electrified.
 
 ## Business Value
 
-The framework helps operators decide where to expand fulfillment capacity, where to deploy EVs first, and where a uniform 30-minute delivery promise may be operationally unrealistic.
+The framework helps operators decide where to expand fulfillment capacity, where to deploy EVs first, and where a longer service tier is cheaper than additional hubs.
 
 ## Limitations
 

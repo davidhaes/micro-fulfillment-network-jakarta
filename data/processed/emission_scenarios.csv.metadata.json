@@ -3,7 +3,7 @@
   "source": "Derived from optimized network distance outputs and literature-based emission factors",
   "source_url": "Local pipeline output",
   "license": "Derived open data",
-  "access_date": "2026-05-30",
+  "access_date": "2026-09-27",
   "spatial_resolution": "Scenario table by MFC count and EV adoption level",
   "temporal_coverage": "Scenario analysis, not observed emissions",
   "preprocessing_steps": [
